@@ -1,0 +1,41 @@
+{
+  "name": "fastify-healthcheck",
+  "version": "0.1.0",
+  "description": "Fastify Plugin to serve responses for health checks",
+  "main": "src/plugin",
+  "scripts": {
+    "example": "node example/example",
+    "example-enhanced": "node example/example-with-secretkey-and-token",
+    "lint": "standard \"./*.js\" \"./src/**/*.js\" \"./test/**/*.test.js\" \"./example/**/*.js\"",
+    "test:unit": "tap -J test/*.test.js test/*/*.test.js",
+    "test": "npm run lint && npm run test:unit"
+  },
+  "dependencies": {
+    "fastify-plugin": "^0.2.2"
+  },
+  "devDependencies": {
+    "fastify": "^0.43.0",
+    "simple-get": "^3.0.3",
+    "standard": "^12.0.1",
+    "tap": "^12.0.1"
+  },
+  "peerDependencies": {},
+  "engines": {
+    "node": ">=8.12.0"
+  },
+  "homepage": "https://github.com/smartiniOnGitHub/fastify-healthcheck#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smartiniOnGitHub/fastify-healthcheck.git"
+  },
+  "bugs": {
+    "url": "https://github.com/smartiniOnGitHub/fastify-healthcheck/issues"
+  },
+  "keywords": [
+    "fastify",
+    "plugin",
+    "healthcheck"
+  ],
+  "author": "Sandro Martini <sandro.martini@gmail.com>",
+  "license": "Apache-2.0"
+}
