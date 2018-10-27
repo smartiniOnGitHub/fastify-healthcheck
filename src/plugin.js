@@ -22,9 +22,9 @@ function fastifyHealthchecks (fastify, options, next) {
     url = '/health',
     healthcheckUrlDisable = false,
     healthcheckUrlAlwaysFail = false
-    // TODO: add other options, like healthcheckUrlOutputType, healthcheckStandaloneDisable, etc ...
+    // TODO: add other options, like healthcheckUrlOutputType, healthcheckStandaloneDisable, etc ... wip
   } = options
-  console.log(`DEBUG - plugin options: ${JSON.stringify(options)}`) // TODO: temp ...
+  // console.log(`DEBUG - plugin options: ${JSON.stringify(options)}`)
 
   if (typeof url !== 'string') {
     throw new TypeError(`The option url must be a string, instead got a '${typeof url}'`)
@@ -39,7 +39,7 @@ function fastifyHealthchecks (fastify, options, next) {
     })
   }
 
-  // TODO: add other features ...
+  // TODO: add other features ... wip
 
   function _healthcheckHandler (req, reply) {
     // return a simple health check message and an HTTP success code
