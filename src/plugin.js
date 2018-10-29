@@ -22,7 +22,6 @@ function fastifyHealthchecks (fastify, options, next) {
     url = '/health',
     healthcheckUrlDisable = false,
     healthcheckUrlAlwaysFail = false
-    // TODO: add other options, like healthcheckUrlOutputType, healthcheckStandaloneDisable, etc ... wip
   } = options
   // console.log(`DEBUG - plugin options: ${JSON.stringify(options)}`)
 
@@ -39,8 +38,6 @@ function fastifyHealthchecks (fastify, options, next) {
     })
   }
 
-  // TODO: add other features ... wip
-
   function _healthcheckHandler (req, reply) {
     // return a simple health check message and an HTTP success code
     if (healthcheckUrlAlwaysFail === false) {
@@ -49,7 +46,6 @@ function fastifyHealthchecks (fastify, options, next) {
       // unless plugin option to always fail is raised
       reply.code(500).type('application/json').send({ statusCode: 500, status: 'DOWN' })
     }
-    // TODO: handle even 'status' : 'DOWN' with HTTP return code error, if related plugin option is set ...
   }
 
   next()
