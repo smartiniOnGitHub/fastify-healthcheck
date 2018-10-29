@@ -28,8 +28,9 @@ EXPOSE 3000
 
 # add an healthcheck, useful
 # healthcheck with curl, but not recommended
-HEALTHCHECK CMD curl --fail http://localhost:3000/health || exit 1
-# TODO: add HEALTHCHECK even calling the additional script exposed by the plugin, but commenting previous one ... wip
+# HEALTHCHECK CMD curl --fail http://localhost:3000/health || exit 1
+# healthcheck by calling the additional script exposed by the plugin
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s CMD npm start
 
 # CMD [ "npm", "start" ]
 CMD [ "npm", "run", "example" ]
