@@ -4,8 +4,16 @@
   "description": "Fastify Plugin to serve responses for health checks",
   "main": "src/plugin",
   "scripts": {
+    "dependency:log": "npm list > ./temp/dependencies.log",
+    "docker:build": "docker build -t fastify-healthcheck-example -f Dockerfile.example .",
+    "docker:run": "docker run --rm --name fastify-healthcheck-example -d -p 3000:3000 -t fastify-healthcheck-example",
+    "docker:inspect": "docker exec -it fastify-healthcheck-example bash",
+    "docker:log": "docker logs --follow --tail=1000 fastify-healthcheck-example",
+    "docker:process": "docker ps --filter name=fastify-healthcheck-example",
+    "docker:status": "docker inspect --format '{{ json .State.Health }}' fastify-healthcheck-example",
+    "docker:stop": "docker kill fastify-healthcheck-example",
+    "docker:clean": "docker rmi fastify-healthcheck-example",
     "example": "node example/example",
-    "example-enhanced": "node example/example-with-secretkey-and-token",
     "lint": "standard \"./*.js\" \"./src/**/*.js\" \"./test/**/*.test.js\" \"./example/**/*.js\"",
     "test:unit": "tap -J test/*.test.js test/*/*.test.js",
     "test": "npm run lint && npm run test:unit"

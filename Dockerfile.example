@@ -1,0 +1,35 @@
+FROM node:8
+
+LABEL version="1.0.0"
+LABEL description="Example Fastify (Node.js) Docker Image"
+LABEL maintainer "Sandro Martini <sandro.martini@gmail.com>"
+
+RUN mkdir -p /work
+WORKDIR /work
+
+ARG NODE_ENV
+ENV NODE_ENV $NODE_ENV
+# ENV NODE_ENV production
+# to be able to run tests (for example in CI), do not set production as environment
+
+ENV NPM_CONFIG_LOGLEVEL warn
+
+# copy project definition/dependencies files, for better reuse of layers
+COPY ./package*.json ./$WORKDIR
+
+# install dependencies here, for better reuse of layers
+RUN npm install
+# RUN npm install --only=production
+
+# copy all sources in the container (exclusions in .dockerignore file)
+COPY . $WORKDIR
+
+EXPOSE 3000
+
+# add an healthcheck, useful
+# healthcheck with curl, but not recommended
+HEALTHCHECK CMD curl --fail http://localhost:3000/health || exit 1
+# TODO: add HEALTHCHECK even calling the additional script exposed by the plugin, but commenting previous one ... wip
+
+# CMD [ "npm", "start" ]
+CMD [ "npm", "run", "example" ]
