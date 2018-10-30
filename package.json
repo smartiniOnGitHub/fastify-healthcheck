@@ -11,6 +11,7 @@
     "docker:log": "docker logs --follow --tail=1000 fastify-healthcheck-example",
     "docker:process": "docker ps --filter name=fastify-healthcheck-example",
     "docker:status": "docker inspect --format '{{ json .State.Health }}' fastify-healthcheck-example",
+    "docker:healthcheck-manual": "docker exec -it fastify-healthcheck-example node src/healthcheck",
     "docker:stop": "docker kill fastify-healthcheck-example",
     "docker:clean": "docker rmi fastify-healthcheck-example",
     "example": "node example/example",
