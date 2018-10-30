@@ -22,16 +22,16 @@
 // even to avoid dependencies clash
 const http = require('http')
 
-// TODO: get options from command-line or environment ... wip
 const options = {
-  host: 'localhost',
-  port: '3000',
-  path: '/health',
-  timeout: 2000,
+  timeout: 5000, // 5 sec
   log: true // if enabled, write log to console
 }
+const url = process.argv[2] || 'http://localhost:3000/health'
+if (options.log === true) {
+  console.log(`call healthcheck at: ${url} ...`)
+}
 
-const request = http.request(options, (res) => {
+const request = http.get(url, (res) => {
   if (options.log === true) {
     console.log(`status: ${res.statusCode}`)
   }
@@ -41,6 +41,7 @@ const request = http.request(options, (res) => {
     process.exit(1)
   }
 })
+request.setTimeout(options.timeout)
 
 request.on('error', (err) => {
   if (options.log === true) {
