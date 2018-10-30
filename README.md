@@ -1,5 +1,10 @@
 # fastify-healthcheck
 
+  [![NPM Version](https://img.shields.io/npm/v/fastify-healthcheck.svg?style=flat)](https://npmjs.org/package/fastify-healthcheck/)
+  [![NPM Downloads](https://img.shields.io/npm/dm/fastify-healthcheck.svg?style=flat)](https://npmjs.org/package/fastify-healthcheck/)
+  [![Code Style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)
+  [![Coverage Status](https://coveralls.io/repos/github/smartiniOnGitHub/fastify-healthcheck/badge.svg?branch=master)](https://coveralls.io/github/smartiniOnGitHub/fastify-healthcheck/?branch=master)
+
 Fastify Plugin to serve responses that report about the web application,
 if it's still running and alive (health checks).
 
