@@ -40,8 +40,11 @@ fastify.register(require('fastify-healthcheck'))
 fastify.listen(3000)
 
 // To test, for example (in another terminal session) do:
-// curl http://127.0.0.1:3000/health => returning an HTTP response 200 (OK)
+// `curl http://127.0.0.1:3000/health` => returning an HTTP response 200 (OK)
 // and a JSON response like: {"statusCode":200,"status":"UP"}
+// or run the healthcheck script, for example with:
+// `node src/healthcheck http://localhost:3000/health`
+// and get the same HTTP response seen before
 ```
 
 In the [example](./example/) folder there is a simple server scripts that
@@ -54,13 +57,13 @@ available by the plugin.
 For convenience, all Docker commands have been defined in `package.json`,
 to run many of them in a simple way (with `npm run custom-command`),
 like in the following sequence:
-- docker:build, to build the image
-- docker:run, to start the container from generated image, in detached mode
-- docker:healthcheck-manual, to run the healthcheck script in the container but manually
-- docker:status, to get the health status of the container
-- and others like: docker:inspect (interactive), docker:log (<CTRL>C to close), docker:process, etc ...
-- docker:stop, to stop running container
-- docker:clean, to remove generated image
+- `docker:build`, to build the image
+- `docker:run`, to start the container from generated image, in detached mode
+- `docker:healthcheck-manual`, to run the healthcheck script in the container but manually
+- `docker:status`, to get the health status of the container
+- and others like: `docker:inspect` (interactive), `docker:log` (<CTRL>C to close), `docker:process`, etc ...
+- `docker:stop`, to stop running container
+- `docker:clean`, to remove generated image
 
 
 ## Requirements
