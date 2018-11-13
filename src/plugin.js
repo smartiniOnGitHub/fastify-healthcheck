@@ -41,10 +41,10 @@ function fastifyHealthchecks (fastify, options, next) {
   function _healthcheckHandler (req, reply) {
     // return a simple health check message and an HTTP success code
     if (healthcheckUrlAlwaysFail === false) {
-      reply.type('application/json').send({ statusCode: 200, status: 'UP' })
+      reply.send({ statusCode: 200, status: 'UP' })
     } else {
       // unless plugin option to always fail is raised
-      reply.code(500).type('application/json').send({ statusCode: 500, status: 'DOWN' })
+      reply.code(500).send({ statusCode: 500, status: 'DOWN' })
     }
   }
 
@@ -52,6 +52,6 @@ function fastifyHealthchecks (fastify, options, next) {
 }
 
 module.exports = fp(fastifyHealthchecks, {
-  fastify: '>=0.43.0',
+  fastify: '1.x',
   name: 'fastify-healthcheck'
 })

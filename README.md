@@ -68,7 +68,7 @@ like in the following sequence:
 
 ## Requirements
 
-Fastify 0.43.0 or later.
+Fastify 1.x .
 
 
 ## Note
