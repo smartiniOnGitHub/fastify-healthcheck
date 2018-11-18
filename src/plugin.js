@@ -16,18 +16,26 @@
 'use strict'
 
 const fp = require('fastify-plugin')
+const underPressurePlugin = require('under-pressure')
 
 function fastifyHealthchecks (fastify, options, next) {
   const {
     url = '/health',
     healthcheckUrlDisable = false,
-    healthcheckUrlAlwaysFail = false
+    healthcheckUrlAlwaysFail = false,
+    underPressureOptions = {
+      // TODO: check if add single options ... no, keep only default empty object here and forward all given ... wip
+    }
   } = options
   // console.log(`DEBUG - plugin options: ${JSON.stringify(options)}`)
 
   if (typeof url !== 'string') {
     throw new TypeError(`The option url must be a string, instead got a '${typeof url}'`)
   }
+
+  // register plugin dependencies
+  // TODO: check if it's the right way to do it ... yes it is, otherwise I should add 'under-pressure' plugin in dependencies for plugin export, and register outside of here
+  fastify.register(underPressurePlugin, underPressureOptions)
 
   // execute plugin code
   if (healthcheckUrlDisable === null || healthcheckUrlDisable === false) {
@@ -53,5 +61,6 @@ function fastifyHealthchecks (fastify, options, next) {
 
 module.exports = fp(fastifyHealthchecks, {
   fastify: '1.x',
-  name: 'fastify-healthcheck'
+  name: 'fastify-healthcheck',
+  dependencies: ['under-pressure']
 })

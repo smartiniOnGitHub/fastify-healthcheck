@@ -24,6 +24,12 @@ will be used, but if needed can be specified:
 - `healthcheckUrlDisable`, to not publish the healthcheck route
 - `healthcheckUrlAlwaysFail`, to always return failure responses (useful to test failure responses)
 
+Under the hood, the healthcheck status is determined by the 
+[under-pressure](https://www.npmjs.com/package/under-pressure) plugin, 
+used here as a dependency; so it's possible to specify all its
+configuration options here.
+
+
 Sample usage:
 
 ```js
@@ -73,7 +79,7 @@ Fastify 1.x .
 
 ## Note
 
-By default the plugin map a default endpoint on the URI `/health` to be
+The plugin map a default endpoint on the URI `/health` to be
 called via GET, but it's possible to change it with the setting 'url'
 in plugin options.
 

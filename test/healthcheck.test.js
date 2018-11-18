@@ -18,16 +18,27 @@
 const test = require('tap').test
 const sget = require('simple-get').concat
 const Fastify = require('fastify')
+const healthcheckPlugin = require('../')
+const underPressure = require('under-pressure') // TODO: probably unnecessary here ... wip
+
+function sleep (msec) {
+  const start = Date.now()
+  while (Date.now() - start < msec) { }
+}
 
 test('healthcheck with all defaults does not return an error, but a good response (200) and some content', (t) => {
   t.plan(5)
   const fastify = Fastify()
-  fastify.register(require('../')) // configure this plugin with its default options
+  fastify.register(underPressure, { // TODO: check if move in my plugin instead ...
+    // maxEventLoopDelay: 50 // TODO: check if really needed here ...
+  })
+  fastify.register(healthcheckPlugin) // configure this plugin with its default options
 
   fastify.listen(0, (err, address) => {
     fastify.server.unref()
     t.error(err)
 
+    process.nextTick(() => sleep(500)) // TODO: check if really needed here ...
     sget({
       method: 'GET',
       timeout: 5000,
@@ -46,7 +57,7 @@ test('healthcheck with all defaults does not return an error, but a good respons
 test('healthcheck on a custom route does not return an error, but a good response (200) and some content', (t) => {
   t.plan(11)
   const fastify = Fastify()
-  fastify.register(require('../'), {
+  fastify.register(healthcheckPlugin, {
     'url': '/custom-health'
   }) // configure this plugin with some custom options
 
@@ -89,7 +100,7 @@ test('healthcheck on a custom route does not return an error, but a good respons
 test('healthcheck on a disabled route (default or custom), return a not found error (404) and some content', (t) => {
   t.plan(13)
   const fastify = Fastify()
-  fastify.register(require('../'), {
+  fastify.register(healthcheckPlugin, {
     'url': '/custom-health',
     healthcheckUrlDisable: true
   }) // configure this plugin with some custom options
@@ -134,7 +145,7 @@ test('healthcheck on a disabled route (default or custom), return a not found er
 test('healthcheck with always failure flag, always return an error, (500) and some content', (t) => {
   t.plan(5)
   const fastify = Fastify()
-  fastify.register(require('../'), {
+  fastify.register(healthcheckPlugin, {
     // 'url': '/custom-health',
     healthcheckUrlAlwaysFail: true
   }) // configure this plugin with some custom options
