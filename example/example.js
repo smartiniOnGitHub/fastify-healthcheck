@@ -19,9 +19,10 @@ const fastify = require('fastify')()
 
 // register plugin with all its options shown but disabled (as a sample)
 fastify.register(require('../src/plugin'), {
-  // url: '/custom-health',
+  // healthcheckUrl: '/custom-health',
   // healthcheckUrlDisable: true,
-  // healthcheckUrlAlwaysFail: true
+  // healthcheckUrlAlwaysFail: true,
+  // underPressureOptions: { } // no under-pressure specific options set here
 })
 
 // example to handle a sample home request to serve a static page, optional here

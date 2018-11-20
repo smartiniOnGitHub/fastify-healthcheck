@@ -20,7 +20,7 @@ content via HTTP GET from that running web application.
 
 The plugin can be used without specifying options, so good default values
 will be used, but if needed can be specified:
-- `url`, to set a different uri for the healthcheck route
+- `healthcheckUrl`, to set a different uri for the healthcheck route
 - `healthcheckUrlDisable`, to not publish the healthcheck route
 - `healthcheckUrlAlwaysFail`, to always return failure responses (useful to test failure responses)
 
@@ -28,6 +28,8 @@ Under the hood, the healthcheck status is determined by the
 [under-pressure](https://www.npmjs.com/package/under-pressure) plugin, 
 used here as a dependency; so it's possible to specify all its
 configuration options here.
+
+To set only 'under-pressure' specific options, set all 'healthcheck' options with null value (so nothing will be overridden by them).
 
 
 Sample usage:
@@ -40,7 +42,7 @@ const fastify = require('fastify')()
 fastify.register(require('fastify-healthcheck'))
 // or
 // example with custom healthcheck url and response to always fail
-// fastify.register(require('fastify-healthcheck'), { url: '/custom-health', healthcheckUrlAlwaysFail: true })
+// fastify.register(require('fastify-healthcheck'), { healthcheckUrl: '/custom-health', healthcheckUrlAlwaysFail: true })
 //
 
 fastify.listen(3000)
@@ -74,7 +76,7 @@ like in the following sequence:
 
 ## Requirements
 
-Fastify 1.x .
+Fastify ^1.1.0 .
 
 
 ## Note

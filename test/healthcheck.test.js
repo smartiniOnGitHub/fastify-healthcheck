@@ -19,26 +19,28 @@ const test = require('tap').test
 const sget = require('simple-get').concat
 const Fastify = require('fastify')
 const healthcheckPlugin = require('../')
-const underPressure = require('under-pressure') // TODO: probably unnecessary here ... wip
+// const underPressure = require('under-pressure') // TODO: probably unnecessary here ... yes
 
 function sleep (msec) {
   const start = Date.now()
   while (Date.now() - start < msec) { }
 }
 
+// TODO: add a test with healthcheck specific options all null, to really see default behavior ... wip
+
 test('healthcheck with all defaults does not return an error, but a good response (200) and some content', (t) => {
   t.plan(5)
   const fastify = Fastify()
-  fastify.register(underPressure, { // TODO: check if move in my plugin instead ...
-    // maxEventLoopDelay: 50 // TODO: check if really needed here ...
-  })
+  // fastify.register(underPressure, { // TODO: check if move in my plugin instead ... yes
+  //   // maxEventLoopDelay: 50 // TODO: check if really needed here ...
+  // })
   fastify.register(healthcheckPlugin) // configure this plugin with its default options
 
   fastify.listen(0, (err, address) => {
     fastify.server.unref()
     t.error(err)
 
-    process.nextTick(() => sleep(500)) // TODO: check if really needed here ...
+    process.nextTick(() => sleep(500)) // TODO: check if really needed here ... not really, but could be useful to have
     sget({
       method: 'GET',
       timeout: 5000,
@@ -47,7 +49,7 @@ test('healthcheck with all defaults does not return an error, but a good respons
       t.error(err)
       t.strictEqual(response.statusCode, 200)
       t.strictEqual(response.headers['content-type'], 'application/json; charset=utf-8')
-      t.deepEqual(JSON.parse(body), { statusCode: 200, status: 'UP' })
+      t.deepEqual(JSON.parse(body), { status: 'ok' })
 
       fastify.close()
     })
@@ -58,7 +60,7 @@ test('healthcheck on a custom route does not return an error, but a good respons
   t.plan(11)
   const fastify = Fastify()
   fastify.register(healthcheckPlugin, {
-    'url': '/custom-health'
+    'healthcheckUrl': '/custom-health'
   }) // configure this plugin with some custom options
 
   fastify.listen(0, (err, address) => {
@@ -73,7 +75,7 @@ test('healthcheck on a custom route does not return an error, but a good respons
       t.error(err)
       t.strictEqual(response.statusCode, 200)
       t.strictEqual(response.headers['content-type'], 'application/json; charset=utf-8')
-      t.deepEqual(JSON.parse(body), { statusCode: 200, status: 'UP' })
+      t.deepEqual(JSON.parse(body), { status: 'ok' })
 
       fastify.close()
     })
@@ -101,7 +103,7 @@ test('healthcheck on a disabled route (default or custom), return a not found er
   t.plan(13)
   const fastify = Fastify()
   fastify.register(healthcheckPlugin, {
-    'url': '/custom-health',
+    'healthcheckUrl': '/custom-health',
     healthcheckUrlDisable: true
   }) // configure this plugin with some custom options
 
@@ -146,7 +148,7 @@ test('healthcheck with always failure flag, always return an error, (500) and so
   t.plan(5)
   const fastify = Fastify()
   fastify.register(healthcheckPlugin, {
-    // 'url': '/custom-health',
+    // 'healthcheckUrl': '/custom-health',
     healthcheckUrlAlwaysFail: true
   }) // configure this plugin with some custom options
 
@@ -162,7 +164,7 @@ test('healthcheck with always failure flag, always return an error, (500) and so
       t.error(err)
       t.strictEqual(response.statusCode, 500)
       t.strictEqual(response.headers['content-type'], 'application/json; charset=utf-8')
-      t.deepEqual(JSON.parse(body), { statusCode: 500, status: 'DOWN' })
+      t.deepEqual(JSON.parse(body), { statusCode: 500, status: 'ko' })
 
       fastify.close()
     })

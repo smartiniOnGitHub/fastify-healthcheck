@@ -20,47 +20,67 @@ const underPressurePlugin = require('under-pressure')
 
 function fastifyHealthchecks (fastify, options, next) {
   const {
-    url = '/health',
+    healthcheckUrl = '/health',
     healthcheckUrlDisable = false,
     healthcheckUrlAlwaysFail = false,
-    underPressureOptions = {
-      // TODO: check if add single options ... no, keep only default empty object here and forward all given ... wip
-    }
+    underPressureOptions = { }
   } = options
-  // console.log(`DEBUG - plugin options: ${JSON.stringify(options)}`)
 
-  if (typeof url !== 'string') {
-    throw new TypeError(`The option url must be a string, instead got a '${typeof url}'`)
-  }
-
-  // register plugin dependencies
-  // TODO: check if it's the right way to do it ... yes it is, otherwise I should add 'under-pressure' plugin in dependencies for plugin export, and register outside of here
-  fastify.register(underPressurePlugin, underPressureOptions)
+  ensureIsString(healthcheckUrl, 'healthcheckUrl')
+  ensureIsBoolean(healthcheckUrlDisable, 'healthcheckUrlDisable')
+  ensureIsBoolean(healthcheckUrlAlwaysFail, 'healthcheckUrlAlwaysFail')
+  ensureIsObject(underPressureOptions, 'underPressureOptions')
 
   // execute plugin code
-  if (healthcheckUrlDisable === null || healthcheckUrlDisable === false) {
-    fastify.route({
-      method: 'GET',
-      url: url,
-      handler: _healthcheckHandler
-    })
-  }
 
-  function _healthcheckHandler (req, reply) {
-    // return a simple health check message and an HTTP success code
-    if (healthcheckUrlAlwaysFail === false) {
-      reply.send({ statusCode: 200, status: 'UP' })
-    } else {
-      // unless plugin option to always fail is raised
-      reply.code(500).send({ statusCode: 500, status: 'DOWN' })
+  // handle the special case to always return a (fixed) failure message
+  if (healthcheckUrlAlwaysFail !== null && healthcheckUrlAlwaysFail === true) {
+    if (healthcheckUrlDisable === null || healthcheckUrlDisable === false) {
+      fastify.route({
+        method: 'GET',
+        url: healthcheckUrl,
+        handler: (req, reply) => {
+          reply.code(500).send({ statusCode: 500, status: 'ko' })
+        }
+      })
     }
+  } else {
+    // normal plugin operations
+    // map plugin options with those of under-pressure, overriding them
+    if (healthcheckUrlDisable === null || healthcheckUrlDisable === false) {
+      underPressureOptions.exposeStatusRoute = true
+      if (healthcheckUrl !== null) {
+        // overwrite the route to expose with the value specified
+        underPressureOptions.exposeStatusRoute = healthcheckUrl
+      }
+    }
+
+    // register plugin dependencies
+    fastify.register(underPressurePlugin, underPressureOptions)
   }
 
   next()
 }
 
+function ensureIsString (arg, name) {
+  if (arg !== null && typeof arg !== 'string') {
+    throw new TypeError(`The argument '${name}' must be a string, instead got a '${typeof arg}'`)
+  }
+}
+
+function ensureIsBoolean (arg, name) {
+  if (arg !== null && typeof arg !== 'boolean') {
+    throw new TypeError(`The argument '${name}' must be a boolean, instead got a '${typeof arg}'`)
+  }
+}
+
+function ensureIsObject (arg, name) {
+  if (arg !== null && typeof arg !== 'object') {
+    throw new TypeError(`The argument '${name}' must be a object, instead got a '${typeof arg}'`)
+  }
+}
+
 module.exports = fp(fastifyHealthchecks, {
-  fastify: '1.x',
-  name: 'fastify-healthcheck',
-  dependencies: ['under-pressure']
+  fastify: '^1.1.0',
+  name: 'fastify-healthcheck'
 })
