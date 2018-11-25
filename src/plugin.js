@@ -78,8 +78,5 @@ function ensureIsObject (arg, name) {
   }
 }
 
-// TODO: check how to set plugin name to 'fastify-healthcheck' ... ok but not mandatory, so not really needed here
-// TODO: check Fastify version, etc ... done by under-pressure, so maybe not really needed here
-
 // not using fastify-plugin, to fully encapsulate under-pressure plugin
 module.exports = fastifyHealthcheck
