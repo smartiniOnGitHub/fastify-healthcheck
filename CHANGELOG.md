@@ -4,7 +4,12 @@
 Summary Changelog:
 - Delegate to the [under-pressure](https://www.npmjs.com/package/under-pressure)
   plugin the logic to report the status of the web application
-- Update Fastify dependencies to '1.1.0' or higher (but on 1.x)
+- To fully encapsulate `under-pressure` features, removed the dependency
+  on [fastify-plugin](https://github.com/fastify/fastify-plugin);
+  for more info look [here](https://github.com/fastify/fastify/blob/master/docs/Plugins.md#handle-the-scope), 
+  [here](https://github.com/fastify/fastify/blob/master/docs/Plugins-Guide.md#how-to-handle-encapsulation-and-distribution)
+- Update Fastify dependencies to '1.1.0' or higher (but on 1.x),
+  but without `fastify-plugin` to check it now (see related changes)
 
 ## [0.1.1](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/0.1.1) (2018-11-13)
 Summary Changelog:

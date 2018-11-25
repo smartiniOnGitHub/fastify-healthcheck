@@ -15,10 +15,7 @@
  */
 'use strict'
 
-const fp = require('fastify-plugin')
-const underPressurePlugin = require('under-pressure')
-
-function fastifyHealthchecks (fastify, options, next) {
+function fastifyHealthcheck (fastify, options, next) {
   const {
     healthcheckUrl = '/health',
     healthcheckUrlDisable = false,
@@ -33,33 +30,34 @@ function fastifyHealthchecks (fastify, options, next) {
 
   // execute plugin code
 
-  // handle the special case to always return a (fixed) failure message
-  if (healthcheckUrlAlwaysFail !== null && healthcheckUrlAlwaysFail === true) {
-    if (healthcheckUrlDisable === null || healthcheckUrlDisable === false) {
-      fastify.route({
-        method: 'GET',
-        url: healthcheckUrl,
-        handler: (req, reply) => {
-          reply.code(500).send({ statusCode: 500, status: 'ko' })
-        }
-      })
-    }
-  } else {
-    // normal plugin operations
-    // map plugin options with those of under-pressure, overriding them
-    if (healthcheckUrlDisable === null || healthcheckUrlDisable === false) {
-      underPressureOptions.exposeStatusRoute = true
-      if (healthcheckUrl !== null) {
-        // overwrite the route to expose with the value specified
-        underPressureOptions.exposeStatusRoute = healthcheckUrl
-      }
-    }
+  // register under-pressure plugin
+  // note that it will trigger automatic failure responses
+  // in all routes defined here when current values are higher
+  // that threshold values set
+  fastify.register(require('under-pressure'), underPressureOptions)
 
-    // register plugin dependencies
-    fastify.register(underPressurePlugin, underPressureOptions)
+  let healthcheckHandler = normalHandler
+  if (healthcheckUrlAlwaysFail !== null && healthcheckUrlAlwaysFail === true) {
+    healthcheckHandler = failHandler
+  }
+
+  if (healthcheckUrlDisable === null || healthcheckUrlDisable === false) {
+    fastify.route({
+      method: 'GET',
+      url: healthcheckUrl,
+      handler: healthcheckHandler
+    })
   }
 
   next()
+}
+
+function failHandler (req, reply) {
+  reply.code(500).send({ statusCode: 500, status: 'ko' })
+}
+
+function normalHandler (req, reply) {
+  reply.code(200).send({ statusCode: 200, status: 'ok' })
 }
 
 function ensureIsString (arg, name) {
@@ -80,7 +78,8 @@ function ensureIsObject (arg, name) {
   }
 }
 
-module.exports = fp(fastifyHealthchecks, {
-  fastify: '^1.1.0',
-  name: 'fastify-healthcheck'
-})
+// TODO: check how to set plugin name to 'fastify-healthcheck' ... ok but not mandatory, so not really needed here
+// TODO: check Fastify version, etc ... done by under-pressure, so maybe not really needed here
+
+// not using fastify-plugin, to fully encapsulate under-pressure plugin
+module.exports = fastifyHealthcheck

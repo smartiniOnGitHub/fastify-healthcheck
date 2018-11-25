@@ -21,8 +21,7 @@
     "test": "npm run lint && npm run test:unit"
   },
   "dependencies": {
-    "fastify-plugin": "^1.2.1",
-    "under-pressure": "^0.2.0"
+    "under-pressure": "^0.3.0"
   },
   "devDependencies": {
     "fastify": "^1.13.0",

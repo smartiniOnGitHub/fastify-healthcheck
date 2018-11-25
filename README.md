@@ -11,7 +11,7 @@ if it's still running and alive (health checks).
 This is very useful with Containers like `Docker`
 and orchestrators like `Kubernetes`.
 
-With this plugin, Fastify could expose an healthcheck route configured
+With this plugin, Fastify by default expose an healthcheck route configured
 for `/health` GET requests, and even a script that can be executed to get
 content via HTTP GET from that running web application.
 
@@ -29,7 +29,7 @@ Under the hood, the healthcheck status is determined by the
 used here as a dependency; so it's possible to specify all its
 configuration options here.
 
-To set only 'under-pressure' specific options, set all 'healthcheck' options with null value (so nothing will be overridden by them).
+To set only `under-pressure` specific options, set all `healthcheck` options with null value (so nothing will be overridden by them).
 
 
 Sample usage:
@@ -49,7 +49,7 @@ fastify.listen(3000)
 
 // To test, for example (in another terminal session) do:
 // `curl http://127.0.0.1:3000/health` => returning an HTTP response 200 (OK)
-// and a JSON response like: {"statusCode":200,"status":"UP"}
+// and a JSON response like: {"statusCode":200,"status":"ok"}
 // or run the healthcheck script, for example with:
 // `node src/healthcheck http://localhost:3000/health`
 // and get the same HTTP response seen before
@@ -81,6 +81,10 @@ Fastify ^1.1.0 .
 
 ## Note
 
+To fully encapsulate `under-pressure` features inside the scope 
+of this plugin, the plugin is not exposed by [fastify-plugin](https://github.com/fastify/fastify-plugin);
+for more info look [here](https://github.com/fastify/fastify/blob/master/docs/Plugins.md#handle-the-scope), [here](https://github.com/fastify/fastify/blob/master/docs/Plugins-Guide.md#how-to-handle-encapsulation-and-distribution).
+
 The plugin map a default endpoint on the URI `/health` to be
 called via GET, but it's possible to change it with the setting 'url'
 in plugin options.
@@ -89,7 +93,7 @@ The plugin exposes even another script that tries to get some content
 (via HTTP GET) from the current web application where it's running.
 In a container environment this could be useful to let containers runtime
 do the healthcheck without the need to use other tools
-like 'curl' or 'wget' that must be available in the container.
+like `curl` or `wget` that must be available in the container.
 
 Both approaches could be useful in most common cases, like
 Kubernetes HTTP GET, or Kubernetes EXEC or Docker HEALTHCHECK,
@@ -98,6 +102,11 @@ or others similar.
 Note that the healthcheck script gets the URL to call from the command-line,
 but if not specified it will use a default value of 
 [http://localhost:3000/health](http://localhost:3000/health).
+
+To execute the healthcheck script from another Node.js project/package, 
+you need to run something like: 
+`node node_modules/fastify-healthcheck/src/healthcheck http://localhost:8000/health`,
+with the webapp exposed to the port `8000` in this case.
 
 
 ## License

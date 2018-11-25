@@ -19,7 +19,6 @@ const test = require('tap').test
 const sget = require('simple-get').concat
 const Fastify = require('fastify')
 const healthcheckPlugin = require('../')
-// const underPressure = require('under-pressure') // TODO: probably unnecessary here ... yes
 
 function sleep (msec) {
   const start = Date.now()
@@ -31,25 +30,22 @@ function sleep (msec) {
 test('healthcheck with all defaults does not return an error, but a good response (200) and some content', (t) => {
   t.plan(5)
   const fastify = Fastify()
-  // fastify.register(underPressure, { // TODO: check if move in my plugin instead ... yes
-  //   // maxEventLoopDelay: 50 // TODO: check if really needed here ...
-  // })
   fastify.register(healthcheckPlugin) // configure this plugin with its default options
 
   fastify.listen(0, (err, address) => {
     fastify.server.unref()
     t.error(err)
 
-    process.nextTick(() => sleep(500)) // TODO: check if really needed here ... not really, but could be useful to have
+    process.nextTick(() => sleep(500)) // not really, but could be useful to have
     sget({
       method: 'GET',
-      timeout: 5000,
+      timeout: 2000,
       url: `${address}/health`
     }, (err, response, body) => {
       t.error(err)
       t.strictEqual(response.statusCode, 200)
       t.strictEqual(response.headers['content-type'], 'application/json; charset=utf-8')
-      t.deepEqual(JSON.parse(body), { status: 'ok' })
+      t.deepEqual(JSON.parse(body), { statusCode: 200, status: 'ok' })
 
       fastify.close()
     })
@@ -69,13 +65,13 @@ test('healthcheck on a custom route does not return an error, but a good respons
 
     sget({
       method: 'GET',
-      timeout: 5000,
+      timeout: 2000,
       url: `${address}/custom-health`
     }, (err, response, body) => {
       t.error(err)
       t.strictEqual(response.statusCode, 200)
       t.strictEqual(response.headers['content-type'], 'application/json; charset=utf-8')
-      t.deepEqual(JSON.parse(body), { status: 'ok' })
+      t.deepEqual(JSON.parse(body), { statusCode: 200, status: 'ok' })
 
       fastify.close()
     })
@@ -83,13 +79,12 @@ test('healthcheck on a custom route does not return an error, but a good respons
     // ensure default url is not exposed
     sget({
       method: 'GET',
-      timeout: 5000,
+      timeout: 2000,
       url: `${address}/health`
     }, (err, response, body) => {
       t.error(err)
       t.strictEqual(response.statusCode, 404)
       t.strictEqual(response.headers['content-type'], 'application/json; charset=utf-8')
-      // t.strictEqual(JSON.parse(body), { statusCode: 404, error: 'Not Found', message: 'Not found' })
       t.strictEqual(JSON.parse(body).statusCode, 404)
       t.strictEqual(JSON.parse(body).error, 'Not Found')
       t.strictEqual(JSON.parse(body).message, 'Not Found')
@@ -113,7 +108,7 @@ test('healthcheck on a disabled route (default or custom), return a not found er
 
     sget({
       method: 'GET',
-      timeout: 5000,
+      timeout: 2000,
       url: `${address}/custom-health`
     }, (err, response, body) => {
       t.error(err)
@@ -129,7 +124,7 @@ test('healthcheck on a disabled route (default or custom), return a not found er
     // ensure default url is not exposed
     sget({
       method: 'GET',
-      timeout: 5000,
+      timeout: 2000,
       url: `${address}/health`
     }, (err, response, body) => {
       t.error(err)
@@ -158,7 +153,7 @@ test('healthcheck with always failure flag, always return an error, (500) and so
 
     sget({
       method: 'GET',
-      timeout: 5000,
+      timeout: 2000,
       url: `${address}/health`
     }, (err, response, body) => {
       t.error(err)
@@ -170,3 +165,5 @@ test('healthcheck with always failure flag, always return an error, (500) and so
     })
   })
 })
+
+// TODO: set some under-pressure option (even to see always fail, but for it) and ensure all is good ... wip
