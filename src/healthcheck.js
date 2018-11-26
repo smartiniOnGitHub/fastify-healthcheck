@@ -17,6 +17,7 @@
 
 // standalone script, to get content from the running web application
 // for example it can be called by container health checks
+// return code will be 0 for success, or the HTTP error code
 
 // use Node.js 'http' integrated module,
 // even to avoid dependencies clash
@@ -38,7 +39,7 @@ const request = http.get(url, (res) => {
   if (res.statusCode === 200) {
     process.exit(0)
   } else {
-    process.exit(1)
+    process.exit(res.statusCode || 1)
   }
 })
 request.setTimeout(options.timeout)
@@ -47,7 +48,7 @@ request.on('error', (err) => {
   if (options.log === true) {
     console.log(`error: ${err.message}`)
   }
-  process.exit(1)
+  process.exit(err.statusCode || 1)
 })
 
 request.end()
