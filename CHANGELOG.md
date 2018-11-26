@@ -10,6 +10,10 @@ Summary Changelog:
   [here](https://github.com/fastify/fastify/blob/master/docs/Plugins-Guide.md#how-to-handle-encapsulation-and-distribution)
 - Update Fastify dependencies to '1.1.0' or higher (but on 1.x),
   but without `fastify-plugin` to check it now (see related changes)
+- Add another example (`example-under-pressure-fail`) with `under-pressure`
+  configured to always return a `Service Unavailable` error (HTTP 503)
+- Update `healthcheck` standalone script to return 0 for success,
+  or the HTTP error code in case of failure (or 1 in case of other failure)
 
 ## [0.1.1](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/0.1.1) (2018-11-13)
 Summary Changelog:

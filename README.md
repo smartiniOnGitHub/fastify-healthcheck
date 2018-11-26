@@ -29,7 +29,9 @@ Under the hood, the healthcheck status is determined by the
 used here as a dependency; so it's possible to specify all its
 configuration options here.
 
-To set only `under-pressure` specific options, set all `healthcheck` options with null value (so nothing will be overridden by them).
+To use all default values for `healthcheck` options, do not set its options
+(or set with undefined values); in that way no `under-pressure` specific
+options will be overridden by them.
 
 
 Sample usage:
