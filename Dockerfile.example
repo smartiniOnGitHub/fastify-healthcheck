@@ -33,4 +33,5 @@ EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s CMD npm start
 
 # CMD [ "npm", "start" ]
+# CMD [ "npm", "run", "example-under-pressure-fail" ]
 CMD [ "npm", "run", "example" ]

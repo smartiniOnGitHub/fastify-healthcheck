@@ -15,6 +15,7 @@
     "docker:stop": "docker kill fastify-healthcheck-example",
     "docker:clean": "docker rmi fastify-healthcheck-example",
     "example": "node example/example",
+    "example-under-pressure-fail": "node example/example-under-pressure-fail",
     "start": "node src/healthcheck",
     "lint": "standard \"./*.js\" \"./src/**/*.js\" \"./test/**/*.test.js\" \"./example/**/*.js\"",
     "test:unit": "tap -J test/*.test.js test/*/*.test.js",
