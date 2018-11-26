@@ -25,9 +25,7 @@ function sleep (msec) {
   while (Date.now() - start < msec) { }
 }
 
-// TODO: add a test with healthcheck specific options all null, to really see default behavior ... wip
-
-test('healthcheck with all defaults does not return an error, but a good response (200) and some content', (t) => {
+test('healthcheck with all defaults: does not return an error, but a good response (200) and some content', (t) => {
   t.plan(5)
   const fastify = Fastify()
   fastify.register(healthcheckPlugin) // configure this plugin with its default options
@@ -36,7 +34,7 @@ test('healthcheck with all defaults does not return an error, but a good respons
     fastify.server.unref()
     t.error(err)
 
-    process.nextTick(() => sleep(500)) // not really, but could be useful to have
+    process.nextTick(() => sleep(500)) // not really needed, but could be useful to have
     sget({
       method: 'GET',
       timeout: 2000,
@@ -52,7 +50,7 @@ test('healthcheck with all defaults does not return an error, but a good respons
   })
 })
 
-test('healthcheck on a custom route does not return an error, but a good response (200) and some content', (t) => {
+test('healthcheck on a custom route: does not return an error, but a good response (200) and some content', (t) => {
   t.plan(11)
   const fastify = Fastify()
   fastify.register(healthcheckPlugin, {
@@ -94,7 +92,7 @@ test('healthcheck on a custom route does not return an error, but a good respons
   })
 })
 
-test('healthcheck on a disabled route (default or custom), return a not found error (404) and some content', (t) => {
+test('healthcheck on a disabled route (default or custom): return a not found error (404) and some content', (t) => {
   t.plan(13)
   const fastify = Fastify()
   fastify.register(healthcheckPlugin, {
@@ -139,7 +137,7 @@ test('healthcheck on a disabled route (default or custom), return a not found er
   })
 })
 
-test('healthcheck with always failure flag, always return an error, (500) and some content', (t) => {
+test('healthcheck with always failure flag: always return an error, (500) and some content', (t) => {
   t.plan(5)
   const fastify = Fastify()
   fastify.register(healthcheckPlugin, {
@@ -166,4 +164,108 @@ test('healthcheck with always failure flag, always return an error, (500) and so
   })
 })
 
-// TODO: set some under-pressure option (even to see always fail, but for it) and ensure all is good ... wip
+test('healthcheck with all healthcheck specific options undefined: does not return an error, but a good response (200) and under-pressure defaults', (t) => {
+  t.plan(5)
+  const fastify = Fastify()
+  fastify.register(healthcheckPlugin, {
+    healthcheckUrl: undefined,
+    healthcheckUrlDisable: undefined,
+    healthcheckUrlAlwaysFail: undefined,
+    underPressureOptions: { } // no under-pressure specific options set here
+  }) // configure this plugin with some custom options
+
+  fastify.listen(0, (err, address) => {
+    fastify.server.unref()
+    t.error(err)
+
+    process.nextTick(() => sleep(500))
+    sget({
+      method: 'GET',
+      timeout: 2000,
+      url: `${address}/health`
+    }, (err, response, body) => {
+      t.error(err)
+      t.strictEqual(response.statusCode, 200)
+      t.strictEqual(response.headers['content-type'], 'application/json; charset=utf-8')
+      t.deepEqual(JSON.parse(body), { statusCode: 200, status: 'ok' })
+
+      fastify.close()
+    })
+  })
+})
+
+test('healthcheck with only some under-pressure options defined: does not return an error, but a good response (200) and some content', (t) => {
+  t.plan(6)
+  const fastify = Fastify()
+  fastify.register(healthcheckPlugin, {
+    underPressureOptions: {
+      // exposeStatusRoute: true, // no effect here
+      maxEventLoopDelay: 1000,
+      maxHeapUsedBytes: 100000000,
+      maxRssBytes: 100000000,
+      // message: 'Under pressure!', // custom message
+      retryAfter: 50
+    } // set some under-pressure specific options set here
+  }) // configure this plugin with some custom options
+
+  fastify.listen(0, (err, address) => {
+    fastify.server.unref()
+    t.error(err)
+    t.ok(!fastify.memoryUsage) // ensure is not exposed
+
+    process.nextTick(() => sleep(500))
+    sget({
+      method: 'GET',
+      timeout: 2000,
+      url: `${address}/health`
+    }, (err, response, body) => {
+      t.error(err)
+      t.strictEqual(response.statusCode, 200)
+      t.strictEqual(response.headers['content-type'], 'application/json; charset=utf-8')
+      t.deepEqual(JSON.parse(body), { statusCode: 200, status: 'ok' })
+
+      fastify.close()
+    })
+  })
+})
+
+test('healthcheck with only some under-pressure options defined to always fail: return an error (503) and some content', (t) => {
+  t.plan(7)
+  const fastify = Fastify()
+  fastify.register(healthcheckPlugin, {
+    underPressureOptions: {
+      // exposeStatusRoute: true, // no effect here
+      maxEventLoopDelay: 100,
+      maxHeapUsedBytes: 1,
+      // maxRssBytes: 2,
+      message: 'Under pressure!', // sample custom message
+      retryAfter: 50
+    } // set some under-pressure specific options set here
+  }) // configure this plugin with some custom options
+
+  fastify.listen(0, (err, address) => {
+    fastify.server.unref()
+    t.error(err)
+    t.ok(!fastify.memoryUsage) // ensure is not exposed
+
+    process.nextTick(() => sleep(500))
+    sget({
+      method: 'GET',
+      timeout: 2000,
+      url: `${address}/health`
+    }, (err, response, body) => {
+      t.error(err)
+      t.strictEqual(response.statusCode, 503)
+      t.strictEqual(response.headers['content-type'], 'application/json; charset=utf-8')
+      t.strictEqual(response.headers['retry-after'], '50')
+      t.deepEqual(JSON.parse(body), {
+        error: 'Service Unavailable',
+        // message: 'Service Unavailable', // default message
+        message: 'Under pressure!',
+        statusCode: 503
+      })
+
+      fastify.close()
+    })
+  })
+})
