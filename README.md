@@ -50,6 +50,7 @@ fastify.register(require('fastify-healthcheck'))
 fastify.listen(3000)
 
 // To test, for example (in another terminal session) do:
+// `npm start`, or
 // `curl http://127.0.0.1:3000/health` => returning an HTTP response 200 (OK)
 // and a JSON response like: {"statusCode":200,"status":"ok"}
 // or run the healthcheck script, for example with:
@@ -67,11 +68,17 @@ available by the plugin.
 For convenience, all Docker commands have been defined in `package.json`,
 to run many of them in a simple way (with `npm run custom-command`),
 like in the following sequence:
-- `docker:build`, to build the image
-- `docker:run`, to start the container from generated image, in detached mode
-- `docker:healthcheck-manual`, to run the healthcheck script in the container but manually
+- `docker:build`, to build the image, where the entry point is the example
+- `docker:build:fail`, to build the image, but as entry point the example
+  that is triggering the `Service Unavailable` error (HTTP 503) in the
+  healthcheck route
+- `docker:run`, to start the container from generated image, 
+  in detached mode
+- `docker:healthcheck-manual`, to run the healthcheck script in the
+  container but manually
 - `docker:status`, to get the health status of the container
-- and others like: `docker:inspect` (interactive), `docker:log` (<CTRL>C to close), `docker:process`, etc ...
+- and others like: `docker:inspect` (interactive), `docker:log`
+  (<CTRL>C to close), `docker:process`, etc ...
 - `docker:stop`, to stop running container
 - `docker:clean`, to remove generated image
 

@@ -6,6 +6,7 @@
   "scripts": {
     "dependency:log": "npm list > ./temp/dependencies.log",
     "docker:build": "docker build -t fastify-healthcheck-example -f Dockerfile.example .",
+    "docker:build:fail": "docker build -t fastify-healthcheck-example -f Dockerfile-fail.example .",
     "docker:run": "docker run --rm --name fastify-healthcheck-example -d -p 3000:3000 -t fastify-healthcheck-example",
     "docker:inspect": "docker exec -it fastify-healthcheck-example bash",
     "docker:log": "docker logs --follow --tail=1000 fastify-healthcheck-example",

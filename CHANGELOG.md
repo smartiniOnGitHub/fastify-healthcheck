@@ -1,6 +1,6 @@
 # Change Log
 
-## [0.2.0](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/0.2.0) (unreleased)
+## [0.2.0](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/0.2.0) (2018-11-27)
 Summary Changelog:
 - Delegate to the [under-pressure](https://www.npmjs.com/package/under-pressure)
   plugin the logic to report the status of the web application
@@ -11,7 +11,8 @@ Summary Changelog:
 - Update Fastify dependencies to '1.1.0' or higher (but on 1.x),
   but without `fastify-plugin` to check it now (see related changes)
 - Add another example (`example-under-pressure-fail`) with `under-pressure`
-  configured to always return a `Service Unavailable` error (HTTP 503)
+  configured to always return a `Service Unavailable` error (HTTP 503),
+  and related `Dockerfile-fail.example` to simplify its usage (as a sample)
 - Update `healthcheck` standalone script to return 0 for success,
   or the HTTP error code in case of failure (or 1 in case of other failure)
 
