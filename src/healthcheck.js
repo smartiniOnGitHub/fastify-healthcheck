@@ -29,12 +29,16 @@ const options = {
 }
 const url = process.argv[2] || 'http://localhost:3000/health'
 if (options.log === true) {
-  console.log(`call healthcheck at: ${url} ...`)
+  console.log(`GET call for healthcheck at: ${url} ...`)
 }
 
 const request = http.get(url, (res) => {
   if (options.log === true) {
-    console.log(`status: ${res.statusCode}`)
+    console.log(`statusCode: ${res.statusCode}`)
+    if (res.statusMessage) {
+      console.log(`statusMessage: '${res.statusMessage}'`)
+    }
+    console.log(`----------------`)
   }
   if (res.statusCode === 200) {
     process.exit(0)
