@@ -51,7 +51,7 @@ npm-debug.log
 
 .dockerignore
 Dockerfile
-Dockerfile.*
+Dockerfile*.*
 Jenkinsfile
-Jenkinsfile.*
+Jenkinsfile*.*
 /jenkins
