@@ -44,8 +44,8 @@ TODO.*
 BUILD.md
 
 .dockerignore
-Dockerfile
-Dockerfile.*
+# Dockerfile
+# Dockerfile*.*
 Jenkinsfile
-Jenkinsfile.*
+Jenkinsfile*.*
 /jenkins
