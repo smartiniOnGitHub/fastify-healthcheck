@@ -26,14 +26,14 @@
     "under-pressure": "^0.3.0"
   },
   "devDependencies": {
-    "fastify": "^1.13.0",
+    "fastify": "^1.13.1",
     "simple-get": "^3.0.3",
     "standard": "^12.0.1",
     "tap": "^12.1.0"
   },
   "peerDependencies": {},
   "engines": {
-    "node": ">=8.12.0"
+    "node": ">=8.14.0"
   },
   "homepage": "https://github.com/smartiniOnGitHub/fastify-healthcheck#readme",
   "repository": {
