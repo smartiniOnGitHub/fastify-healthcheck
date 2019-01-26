@@ -1,6 +1,6 @@
 {
   "name": "fastify-healthcheck",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Fastify Plugin to serve responses for health checks",
   "main": "src/plugin",
   "scripts": {
@@ -20,20 +20,21 @@
     "start": "node src/healthcheck",
     "lint": "standard \"./*.js\" \"./src/**/*.js\" \"./test/**/*.test.js\" \"./example/**/*.js\"",
     "test:unit": "tap -J test/*.test.js test/*/*.test.js",
+    "test:unit:debug": "tap -T --strict --node-arg=--inspect-brk test/*.test.js test/*/*.test.js",
     "test": "npm run lint && npm run test:unit"
   },
   "dependencies": {
-    "under-pressure": "^0.3.0"
+    "under-pressure": "^1.0.0"
   },
   "devDependencies": {
-    "fastify": "^1.13.1",
+    "fastify": "^1.13.4",
     "simple-get": "^3.0.3",
     "standard": "^12.0.1",
-    "tap": "^12.1.0"
+    "tap": "^12.4.0"
   },
   "peerDependencies": {},
   "engines": {
-    "node": ">=8.14.0"
+    "node": ">=8.15.0"
   },
   "homepage": "https://github.com/smartiniOnGitHub/fastify-healthcheck#readme",
   "repository": {

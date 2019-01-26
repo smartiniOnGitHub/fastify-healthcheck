@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.3.0](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/0.3.0) (2019-01-26)
+Summary Changelog:
+- Update `under-pressure` to '1.x' and update all dev dependencies to latest release
+- Note that the minor release change here is to let consumers of this package 
+  to have more evidence of underlying library release changes
+
 ## [0.2.0](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/0.2.0) (2018-11-27)
 Summary Changelog:
 - Delegate to the [under-pressure](https://www.npmjs.com/package/under-pressure)

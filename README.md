@@ -4,6 +4,8 @@
   [![NPM Downloads](https://img.shields.io/npm/dm/fastify-healthcheck.svg?style=flat)](https://npmjs.org/package/fastify-healthcheck/)
   [![Code Style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)
   [![Coverage Status](https://coveralls.io/repos/github/smartiniOnGitHub/fastify-healthcheck/badge.svg?branch=master)](https://coveralls.io/github/smartiniOnGitHub/fastify-healthcheck/?branch=master)
+  [![dependencies Status](https://david-dm.org/smartiniOnGitHub/fastify-healthcheck/status.svg)](https://david-dm.org/smartiniOnGitHub/fastify-healthcheck)
+  [![devDependencies Status](https://david-dm.org/smartiniOnGitHub/fastify-healthcheck/dev-status.svg)](https://david-dm.org/smartiniOnGitHub/fastify-healthcheck?type=dev)
 
 Fastify Plugin to serve responses that report about the web application,
 if it's still running and alive (health checks).
@@ -85,7 +87,7 @@ like in the following sequence:
 
 ## Requirements
 
-Fastify ^1.1.0 .
+Fastify ^1.1.0 , Node.js 8.15.x or later.
 
 
 ## Note
