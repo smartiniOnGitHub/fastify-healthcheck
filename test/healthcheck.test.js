@@ -28,10 +28,10 @@ function sleep (msec) {
 test('healthcheck with all defaults: does not return an error, but a good response (200) and some content', (t) => {
   t.plan(5)
   const fastify = Fastify()
+  t.tearDown(fastify.close.bind(fastify))
   fastify.register(healthcheckPlugin) // configure this plugin with its default options
 
   fastify.listen(0, (err, address) => {
-    fastify.server.unref()
     t.error(err)
 
     process.nextTick(() => sleep(500)) // not really needed, but could be useful to have
@@ -44,8 +44,6 @@ test('healthcheck with all defaults: does not return an error, but a good respon
       t.strictEqual(response.statusCode, 200)
       t.strictEqual(response.headers['content-type'], 'application/json; charset=utf-8')
       t.deepEqual(JSON.parse(body), { statusCode: 200, status: 'ok' })
-
-      fastify.close()
     })
   })
 })
@@ -53,12 +51,12 @@ test('healthcheck with all defaults: does not return an error, but a good respon
 test('healthcheck on a custom route: does not return an error, but a good response (200) and some content', (t) => {
   t.plan(11)
   const fastify = Fastify()
+  t.tearDown(fastify.close.bind(fastify))
   fastify.register(healthcheckPlugin, {
     'healthcheckUrl': '/custom-health'
   }) // configure this plugin with some custom options
 
   fastify.listen(0, (err, address) => {
-    fastify.server.unref()
     t.error(err)
 
     sget({
@@ -70,8 +68,6 @@ test('healthcheck on a custom route: does not return an error, but a good respon
       t.strictEqual(response.statusCode, 200)
       t.strictEqual(response.headers['content-type'], 'application/json; charset=utf-8')
       t.deepEqual(JSON.parse(body), { statusCode: 200, status: 'ok' })
-
-      fastify.close()
     })
 
     // ensure default url is not exposed
@@ -86,8 +82,6 @@ test('healthcheck on a custom route: does not return an error, but a good respon
       t.strictEqual(JSON.parse(body).statusCode, 404)
       t.strictEqual(JSON.parse(body).error, 'Not Found')
       t.strictEqual(JSON.parse(body).message, 'Not Found')
-
-      fastify.close()
     })
   })
 })
@@ -95,13 +89,13 @@ test('healthcheck on a custom route: does not return an error, but a good respon
 test('healthcheck on a disabled route (default or custom): return a not found error (404) and some content', (t) => {
   t.plan(13)
   const fastify = Fastify()
+  t.tearDown(fastify.close.bind(fastify))
   fastify.register(healthcheckPlugin, {
     'healthcheckUrl': '/custom-health',
     healthcheckUrlDisable: true
   }) // configure this plugin with some custom options
 
   fastify.listen(0, (err, address) => {
-    fastify.server.unref()
     t.error(err)
 
     sget({
@@ -115,8 +109,6 @@ test('healthcheck on a disabled route (default or custom): return a not found er
       t.strictEqual(JSON.parse(body).statusCode, 404)
       t.strictEqual(JSON.parse(body).error, 'Not Found')
       t.strictEqual(JSON.parse(body).message, 'Not Found')
-
-      fastify.close()
     })
 
     // ensure default url is not exposed
@@ -131,8 +123,6 @@ test('healthcheck on a disabled route (default or custom): return a not found er
       t.strictEqual(JSON.parse(body).statusCode, 404)
       t.strictEqual(JSON.parse(body).error, 'Not Found')
       t.strictEqual(JSON.parse(body).message, 'Not Found')
-
-      fastify.close()
     })
   })
 })
@@ -140,13 +130,13 @@ test('healthcheck on a disabled route (default or custom): return a not found er
 test('healthcheck with always failure flag: always return an error, (500) and some content', (t) => {
   t.plan(5)
   const fastify = Fastify()
+  t.tearDown(fastify.close.bind(fastify))
   fastify.register(healthcheckPlugin, {
     // 'healthcheckUrl': '/custom-health',
     healthcheckUrlAlwaysFail: true
   }) // configure this plugin with some custom options
 
   fastify.listen(0, (err, address) => {
-    fastify.server.unref()
     t.error(err)
 
     sget({
@@ -158,8 +148,6 @@ test('healthcheck with always failure flag: always return an error, (500) and so
       t.strictEqual(response.statusCode, 500)
       t.strictEqual(response.headers['content-type'], 'application/json; charset=utf-8')
       t.deepEqual(JSON.parse(body), { statusCode: 500, status: 'ko' })
-
-      fastify.close()
     })
   })
 })
@@ -167,6 +155,7 @@ test('healthcheck with always failure flag: always return an error, (500) and so
 test('healthcheck with all healthcheck specific options undefined: does not return an error, but a good response (200) and under-pressure defaults', (t) => {
   t.plan(5)
   const fastify = Fastify()
+  t.tearDown(fastify.close.bind(fastify))
   fastify.register(healthcheckPlugin, {
     healthcheckUrl: undefined,
     healthcheckUrlDisable: undefined,
@@ -175,7 +164,6 @@ test('healthcheck with all healthcheck specific options undefined: does not retu
   }) // configure this plugin with some custom options
 
   fastify.listen(0, (err, address) => {
-    fastify.server.unref()
     t.error(err)
 
     process.nextTick(() => sleep(500))
@@ -188,8 +176,6 @@ test('healthcheck with all healthcheck specific options undefined: does not retu
       t.strictEqual(response.statusCode, 200)
       t.strictEqual(response.headers['content-type'], 'application/json; charset=utf-8')
       t.deepEqual(JSON.parse(body), { statusCode: 200, status: 'ok' })
-
-      fastify.close()
     })
   })
 })
@@ -197,6 +183,7 @@ test('healthcheck with all healthcheck specific options undefined: does not retu
 test('healthcheck with only some under-pressure options defined: does not return an error, but a good response (200) and some content', (t) => {
   t.plan(6)
   const fastify = Fastify()
+  t.tearDown(fastify.close.bind(fastify))
   fastify.register(healthcheckPlugin, {
     underPressureOptions: {
       // exposeStatusRoute: true, // no effect here
@@ -209,7 +196,6 @@ test('healthcheck with only some under-pressure options defined: does not return
   }) // configure this plugin with some custom options
 
   fastify.listen(0, (err, address) => {
-    fastify.server.unref()
     t.error(err)
     t.ok(!fastify.memoryUsage) // ensure is not exposed
 
@@ -223,8 +209,6 @@ test('healthcheck with only some under-pressure options defined: does not return
       t.strictEqual(response.statusCode, 200)
       t.strictEqual(response.headers['content-type'], 'application/json; charset=utf-8')
       t.deepEqual(JSON.parse(body), { statusCode: 200, status: 'ok' })
-
-      fastify.close()
     })
   })
 })
@@ -232,6 +216,7 @@ test('healthcheck with only some under-pressure options defined: does not return
 test('healthcheck with only some under-pressure options defined to always fail: return an error (503) and some content', (t) => {
   t.plan(7)
   const fastify = Fastify()
+  t.tearDown(fastify.close.bind(fastify))
   fastify.register(healthcheckPlugin, {
     underPressureOptions: {
       // exposeStatusRoute: true, // no effect here
@@ -244,7 +229,6 @@ test('healthcheck with only some under-pressure options defined to always fail: 
   }) // configure this plugin with some custom options
 
   fastify.listen(0, (err, address) => {
-    fastify.server.unref()
     t.error(err)
     t.ok(!fastify.memoryUsage) // ensure is not exposed
 
@@ -264,8 +248,6 @@ test('healthcheck with only some under-pressure options defined to always fail: 
         message: 'Under pressure!',
         statusCode: 503
       })
-
-      fastify.close()
     })
   })
 })
