@@ -1,5 +1,12 @@
 # Change Log
 
+## [1.0.0](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/1.0.0) (2019-02-03)
+Summary Changelog:
+- Updated all dependencies
+- Updated Tap tests
+- Note that this release number means that the plugin is stable, 
+  and aligned with 'under-pressure' 1.x, and Fastify v1
+
 ## [0.3.0](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/0.3.0) (2019-01-26)
 Summary Changelog:
 - Update `under-pressure` to '1.x' and update all dev dependencies to latest release
