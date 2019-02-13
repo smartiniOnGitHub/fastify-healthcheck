@@ -15,12 +15,21 @@ private/
 tmp/
 temp/
 
+coverage/
+.nyc_output
+
 scripts/
 src/
 test/
 # example/
 
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+
 .env
+.envrc
 .babelrc
 .eslintignore
 .eslintrc*
