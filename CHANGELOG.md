@@ -1,5 +1,11 @@
 # Change Log
 
+## [2.0.0](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/2.0.0) (2019-02-26)
+Summary Changelog:
+- Updated requirements to Fastify 2.x
+- Updated all dependencies
+- Note that this release number is aligned with 'under-pressure' 2.x, so for Fastify v2
+
 ## [1.0.0](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/1.0.0) (2019-02-03)
 Summary Changelog:
 - Updated all dependencies
