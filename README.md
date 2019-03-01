@@ -89,7 +89,7 @@ like in the following sequence:
 
 Fastify ^2.0.0 , Node.js 8.15.x or later.
 Note that plugin releases 0.x and 1.x are for Fastify 1.x, 
-plugin 2.x are for Fastify 2.x, etc.
+plugin releases 2.x are for Fastify 2.x, etc.
 
 
 ## Note
