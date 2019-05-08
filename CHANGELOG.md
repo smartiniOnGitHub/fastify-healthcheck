@@ -1,5 +1,11 @@
 # Change Log
 
+## [2.1.0](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/2.1.0) (2019-05-08)
+Summary Changelog:
+- Updated requirements to Fastify '^2.1.0'
+- Updated to latest 'under-pressure', which drops support for Node.js 6
+- Updated all dependencies
+
 ## [2.0.0](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/2.0.0) (2019-02-26)
 Summary Changelog:
 - Updated requirements to Fastify 2.x
