@@ -57,7 +57,7 @@ function failHandler (req, reply) {
 }
 
 function normalHandler (req, reply) {
-  reply.code(200).send({ statusCode: 200, status: 'ok' })
+  reply.code(200).send({ statusCode: 200, status: 'ok', uptime: process.uptime() })
 }
 
 function ensureIsString (arg, name) {
