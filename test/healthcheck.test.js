@@ -53,7 +53,7 @@ test('healthcheck on a custom route: does not return an error, but a good respon
   const fastify = Fastify()
   t.tearDown(fastify.close.bind(fastify))
   fastify.register(healthcheckPlugin, {
-    'healthcheckUrl': '/custom-health'
+    healthcheckUrl: '/custom-health'
   }) // configure this plugin with some custom options
 
   fastify.listen(0, (err, address) => {
@@ -81,7 +81,7 @@ test('healthcheck on a custom route: does not return an error, but a good respon
       t.strictEqual(response.headers['content-type'], 'application/json; charset=utf-8')
       t.strictEqual(JSON.parse(body).statusCode, 404)
       t.strictEqual(JSON.parse(body).error, 'Not Found')
-      t.strictEqual(JSON.parse(body).message, 'Not Found')
+      t.strictEqual(JSON.parse(body).message, 'Route GET:/health not found')
     })
   })
 })
@@ -91,7 +91,7 @@ test('healthcheck on a disabled route (default or custom): return a not found er
   const fastify = Fastify()
   t.tearDown(fastify.close.bind(fastify))
   fastify.register(healthcheckPlugin, {
-    'healthcheckUrl': '/custom-health',
+    healthcheckUrl: '/custom-health',
     healthcheckUrlDisable: true
   }) // configure this plugin with some custom options
 
@@ -108,7 +108,7 @@ test('healthcheck on a disabled route (default or custom): return a not found er
       t.strictEqual(response.headers['content-type'], 'application/json; charset=utf-8')
       t.strictEqual(JSON.parse(body).statusCode, 404)
       t.strictEqual(JSON.parse(body).error, 'Not Found')
-      t.strictEqual(JSON.parse(body).message, 'Not Found')
+      t.strictEqual(JSON.parse(body).message, 'Route GET:/custom-health not found')
     })
 
     // ensure default url is not exposed
@@ -122,7 +122,7 @@ test('healthcheck on a disabled route (default or custom): return a not found er
       t.strictEqual(response.headers['content-type'], 'application/json; charset=utf-8')
       t.strictEqual(JSON.parse(body).statusCode, 404)
       t.strictEqual(JSON.parse(body).error, 'Not Found')
-      t.strictEqual(JSON.parse(body).message, 'Not Found')
+      t.strictEqual(JSON.parse(body).message, 'Route GET:/health not found')
     })
   })
 })

@@ -38,7 +38,7 @@ const request = http.get(url, (res) => {
     if (res.statusMessage) {
       console.log(`statusMessage: '${res.statusMessage}'`)
     }
-    console.log(`----------------`)
+    console.log('----------------')
   }
   if (res.statusCode === 200) {
     process.exit(0)
