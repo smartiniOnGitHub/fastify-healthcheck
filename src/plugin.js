@@ -15,17 +15,22 @@
  */
 'use strict'
 
+const payloadOK = { statusCode: 200, status: 'ok' }
+const payloadKO = { statusCode: 500, status: 'ko' }
+
 function fastifyHealthcheck (fastify, options, next) {
   const {
     healthcheckUrl = '/health',
     healthcheckUrlDisable = false,
     healthcheckUrlAlwaysFail = false,
+    exposeUptime = false,
     underPressureOptions = { }
   } = options
 
   ensureIsString(healthcheckUrl, 'healthcheckUrl')
   ensureIsBoolean(healthcheckUrlDisable, 'healthcheckUrlDisable')
   ensureIsBoolean(healthcheckUrlAlwaysFail, 'healthcheckUrlAlwaysFail')
+  ensureIsBoolean(exposeUptime, 'exposeUptime')
   ensureIsObject(underPressureOptions, 'underPressureOptions')
 
   // execute plugin code
@@ -37,6 +42,9 @@ function fastifyHealthcheck (fastify, options, next) {
   fastify.register(require('under-pressure'), underPressureOptions)
 
   let healthcheckHandler = normalHandler
+  if (exposeUptime === true) {
+    healthcheckHandler = normalHandlerWithUptime
+  }
   if (healthcheckUrlAlwaysFail !== null && healthcheckUrlAlwaysFail === true) {
     healthcheckHandler = failHandler
   }
@@ -53,11 +61,16 @@ function fastifyHealthcheck (fastify, options, next) {
 }
 
 function failHandler (req, reply) {
-  reply.code(500).send({ statusCode: 500, status: 'ko' })
+  reply.code(500).send(payloadKO)
 }
 
 function normalHandler (req, reply) {
-  reply.code(200).send({ statusCode: 200, status: 'ok' })
+  reply.code(200).send(payloadOK)
+}
+
+function normalHandlerWithUptime (req, reply) {
+  payloadOK.uptime = process.uptime()
+  reply.code(200).send(payloadOK)
 }
 
 function ensureIsString (arg, name) {

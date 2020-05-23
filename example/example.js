@@ -22,7 +22,9 @@ fastify.register(require('../src/plugin'), {
   // healthcheckUrl: '/custom-health',
   // healthcheckUrlDisable: true,
   // healthcheckUrlAlwaysFail: true,
+  // exposeUptime: true,
   // underPressureOptions: { } // no under-pressure specific options set here
+  exposeUptime: true // enable, as a sample
 })
 
 // example to handle a sample home request to serve a static page, optional here

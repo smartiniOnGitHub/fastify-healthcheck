@@ -25,6 +25,7 @@ will be used, but if needed can be specified:
 - `healthcheckUrl`, to set a different uri for the healthcheck route
 - `healthcheckUrlDisable`, to not publish the healthcheck route
 - `healthcheckUrlAlwaysFail`, to always return failure responses (useful to test failure responses)
+- `exposeUptime`, to return even Node.js process uptime (by default disabled)
 
 Under the hood, the healthcheck status is determined by the 
 [under-pressure](https://www.npmjs.com/package/under-pressure) plugin, 
