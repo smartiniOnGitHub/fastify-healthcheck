@@ -1,6 +1,6 @@
 {
   "name": "fastify-healthcheck",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Fastify Plugin to serve responses for health checks",
   "main": "src/plugin",
   "scripts": {
@@ -19,18 +19,21 @@
     "example-under-pressure-fail": "node example/example-under-pressure-fail",
     "start": "node src/healthcheck",
     "lint": "standard \"./*.js\" \"./src/**/*.js\" \"./test/**/*.test.js\" \"./example/**/*.js\"",
-    "test:unit": "tap -J test/*.test.js test/*/*.test.js",
-    "test:unit:debug": "tap -T --strict --node-arg=--inspect-brk test/*.test.js test/*/*.test.js",
+    "test:coverage": "npm run test:unit -- --cov --coverage-report=html",
+    "test:coverage:all": "npm run test:unit --  --cov",
+    "test:unit": "tap -J --comments --no-esm --strict test/*.test.js",
+    "test:unit:debug": "tap -T --node-arg=--inspect-brk --comments --no-esm --strict test/*.test.js",
+    "test:unit:dev": "tap -J --comments --no-esm --strict --watch test/*.test.js",
     "test": "npm run lint && npm run test:unit"
   },
   "dependencies": {
     "under-pressure": "^3.0.0"
   },
   "devDependencies": {
-    "fastify": "^2.1.0",
+    "fastify": "^2.8.0",
     "simple-get": "^3.0.3",
-    "standard": "^12.0.1",
-    "tap": "^12.7.0"
+    "standard": "^14.3.4",
+    "tap": "^14.10.7"
   },
   "peerDependencies": {},
   "engines": {
