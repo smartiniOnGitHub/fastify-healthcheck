@@ -153,13 +153,14 @@ test('healthcheck with always failure flag: always return an error, (500) and so
 })
 
 test('healthcheck with all healthcheck specific options undefined: does not return an error, but a good response (200) and under-pressure defaults', (t) => {
-  t.plan(5)
+  t.plan(8)
   const fastify = Fastify()
   t.tearDown(fastify.close.bind(fastify))
   fastify.register(healthcheckPlugin, {
     healthcheckUrl: undefined,
     healthcheckUrlDisable: undefined,
     healthcheckUrlAlwaysFail: undefined,
+    exposeUptime: undefined,
     underPressureOptions: { } // no under-pressure specific options set here
   }) // configure this plugin with some custom options
 
@@ -175,7 +176,11 @@ test('healthcheck with all healthcheck specific options undefined: does not retu
       t.error(err)
       t.strictEqual(response.statusCode, 200)
       t.strictEqual(response.headers['content-type'], 'application/json; charset=utf-8')
-      t.deepEqual(JSON.parse(body), { statusCode: 200, status: 'ok' })
+      const payload = JSON.parse(body)
+      t.strictEqual(payload.statusCode, 200)
+      t.strictEqual(payload.status, 'ok')
+      t.notOk(payload.uptime) // not present in this reply payload
+      t.deepEqual(payload, { statusCode: 200, status: 'ok' })
     })
   })
 })
@@ -248,6 +253,34 @@ test('healthcheck with only some under-pressure options defined to always fail: 
         message: 'Under pressure!',
         statusCode: 503
       })
+    })
+  })
+})
+
+test('healthcheck with healthcheck option enabled to return even process uptime: ensure a good response (200) will be returned', (t) => {
+  t.plan(7)
+  const fastify = Fastify()
+  t.tearDown(fastify.close.bind(fastify))
+  fastify.register(healthcheckPlugin, {
+    exposeUptime: true
+  }) // configure this plugin with some custom options
+
+  fastify.listen(0, (err, address) => {
+    t.error(err)
+
+    process.nextTick(() => sleep(500))
+    sget({
+      method: 'GET',
+      timeout: 2000,
+      url: `${address}/health`
+    }, (err, response, body) => {
+      t.error(err)
+      t.strictEqual(response.statusCode, 200)
+      t.strictEqual(response.headers['content-type'], 'application/json; charset=utf-8')
+      const payload = JSON.parse(body)
+      t.strictEqual(payload.statusCode, 200)
+      t.strictEqual(payload.status, 'ok')
+      t.ok(payload.uptime > 0.0)
     })
   })
 })
