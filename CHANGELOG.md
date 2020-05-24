@@ -1,5 +1,13 @@
 # Change Log
 
+## [2.2.0](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/2.2.0) (2020-05-24)
+Summary Changelog:
+- Add a new plugin flag 'exposeUptime' (by default false, so disabled) 
+  to add even Node.js process uptime in the reply, when enabled
+- Updated requirements to Fastify '^2.8.0' (as dev dependency)
+- Keep dependency on 'under-pressure' 3.x in this release
+- Updated other dev dependencies
+
 ## [2.1.0](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/2.1.0) (2019-05-08)
 Summary Changelog:
 - Updated requirements to Fastify '^2.1.0'
