@@ -1,6 +1,6 @@
 {
   "name": "fastify-healthcheck",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Fastify Plugin to serve responses for health checks",
   "main": "src/plugin",
   "types": "types/index.d.ts",
@@ -29,15 +29,15 @@
     "test": "npm run lint && npm run test:types && npm run test:unit"
   },
   "dependencies": {
-    "under-pressure": "^3.0.0"
+    "under-pressure": "^4.0.0"
   },
   "devDependencies": {
     "fastify": "^2.14.1",
-    "simple-get": "^3.0.3",
+    "simple-get": "^4.0.0",
     "standard": "^14.3.4",
     "tap": "^14.10.7",
     "tsd": "^0.11.0",
-    "typescript": "3.9.3"
+    "typescript": "^3.9.3"
   },
   "peerDependencies": {},
   "engines": {
