@@ -1,5 +1,12 @@
 # Change Log
 
+## [2.3.0](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/2.3.0) (2020-05-26)
+Summary Changelog:
+- Add TypeScript types
+- Update requirements to Fastify '^2.14.1' (as dev dependency)
+- Update dependency on 'under-pressure' 4.x in this release (latest for Fastify 2.x)
+- Update other dev dependencies
+
 ## [2.2.0](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/2.2.0) (2020-05-24)
 Summary Changelog:
 - Add a new plugin flag 'exposeUptime' (by default false, so disabled) 
