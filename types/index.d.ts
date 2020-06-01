@@ -1,6 +1,7 @@
-import { FastifyMiddleware } from 'fastify'
+import * as fastify from 'fastify'
+import * as http from 'http'
 
-export interface HealthcheckPluginOptions {
+export interface FastifyHealthcheckOptions {
   healthcheckUrl?: string
   healthcheckUrlDisable?: boolean
   healthcheckUrlAlwaysFail?: boolean
@@ -8,5 +9,11 @@ export interface HealthcheckPluginOptions {
   underPressureOptions?: Record<string, any>
 }
 
-declare const healthcheckPlugin: FastifyMiddleware<HealthcheckPluginOptions>
-export default healthcheckPlugin
+export const fastifyHealthcheck: fastify.Plugin<
+http.Server,
+http.IncomingMessage,
+http.ServerResponse,
+FastifyHealthcheckOptions
+>
+
+export default fastifyHealthcheck

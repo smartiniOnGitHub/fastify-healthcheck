@@ -1,15 +1,20 @@
-import healthcheckPlugin, { HealthcheckPluginOptions } from '..'
+import healthcheckPlugin, { FastifyHealthcheckOptions } from '..'
 import { expectAssignable } from 'tsd'
-const fastify = require('fastify')
+import fastify from 'fastify'
 
 const app = fastify()
-app.register(healthcheckPlugin)
-
-expectAssignable < HealthcheckPluginOptions > ({})
-expectAssignable < HealthcheckPluginOptions > ({
+app.register(healthcheckPlugin, {
   healthcheckUrl: '/health',
   healthcheckUrlDisable: false,
   healthcheckUrlAlwaysFail: false,
   exposeUptime: false,
   underPressureOptions: { }
+})
+
+expectAssignable < FastifyHealthcheckOptions >({})
+expectAssignable < FastifyHealthcheckOptions >({
+  healthcheckUrl: '/health',
+  healthcheckUrlDisable: true,
+  healthcheckUrlAlwaysFail: true,
+  exposeUptime: true
 })
