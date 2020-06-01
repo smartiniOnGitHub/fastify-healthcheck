@@ -1,5 +1,9 @@
 # Change Log
 
+## [2.3.1](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/2.3.1) (2020-06-01)
+Summary Changelog:
+- Fix TypeScript types
+
 ## [2.3.0](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/2.3.0) (2020-05-26)
 Summary Changelog:
 - Add TypeScript types

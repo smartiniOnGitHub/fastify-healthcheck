@@ -1,6 +1,6 @@
 {
   "name": "fastify-healthcheck",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "Fastify Plugin to serve responses for health checks",
   "main": "src/plugin",
   "types": "types/index.d.ts",
