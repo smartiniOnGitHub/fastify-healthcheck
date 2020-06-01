@@ -20,21 +20,26 @@
     "example-under-pressure-fail": "node example/example-under-pressure-fail",
     "start": "node src/healthcheck",
     "lint": "standard \"./*.js\" \"./src/**/*.js\" \"./test/**/*.test.js\" \"./example/**/*.js\"",
+    "lint:types": "standardx \"./types/**/*.ts\"",
+    "lint:types:fix": "standardx \"./types/**/*.ts\" --fix",
     "test:coverage": "npm run test:unit -- --cov --coverage-report=html",
     "test:coverage:all": "npm run test:unit --  --cov",
-    "test:types": "tsd",
+    "test:types": "tsd && tsc --p ./types",
     "test:unit": "tap -J --comments --no-esm --strict test/*.test.js",
     "test:unit:debug": "tap -T --node-arg=--inspect-brk --comments --no-esm --strict test/*.test.js",
     "test:unit:dev": "tap -J --comments --no-esm --strict --watch test/*.test.js",
-    "test": "npm run lint && npm run test:types && npm run test:unit"
+    "test": "npm run lint && npm run lint:types && npm run test:types && npm run test:unit"
   },
   "dependencies": {
     "under-pressure": "^4.0.0"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^3.0.2",
+    "@typescript-eslint/parser": "^3.0.2",
     "fastify": "^2.14.1",
     "simple-get": "^4.0.0",
     "standard": "^14.3.4",
+    "standardx": "^5.0.0",
     "tap": "^14.10.7",
     "tsd": "^0.11.0",
     "typescript": "^3.9.3"
@@ -44,7 +49,17 @@
     "node": ">=8.16.0"
   },
   "tsd": {
-    "directory": "types"
+    "directory": "types",
+    "compilerOptions": {
+      "esModuleInterop": true,
+      "strict": true
+    }
+  },
+  "standardx": {
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint/eslint-plugin"
+    ]
   },
   "homepage": "https://github.com/smartiniOnGitHub/fastify-healthcheck#readme",
   "repository": {
