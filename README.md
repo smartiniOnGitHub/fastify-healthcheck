@@ -88,8 +88,8 @@ like in the following sequence:
 
 ## Requirements
 
-Fastify ^2.1.0 , Node.js 8.16.x or later.
-Note that plugin releases 2.x are for Fastify 2.x, etc.
+Fastify ^3.0.0 , Node.js 10.13.x or later.
+Note that plugin releases 2.x are for Fastify 2.x, 3.x are for Fastify 3.x, etc.
 
 
 ## Note
