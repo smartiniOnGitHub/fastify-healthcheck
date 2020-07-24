@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "lib": [ "es2015" ],
+    "target": "ES6",
+    "lib": [ "ES2015", "DOM" ],
     "module": "commonjs",
     "noEmit": true,
     "strict": true,
