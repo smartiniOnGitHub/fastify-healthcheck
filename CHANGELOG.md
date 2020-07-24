@@ -1,5 +1,12 @@
 # Change Log
 
+## [3.0.0](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/3.0.0) (2020-07-24)
+[Full Changelog](https://github.com/smartiniOnGitHub/fastify-favicon/compare/2.3.1...3.0.0)
+Summary Changelog:
+- Updated requirements to Fastify '^3.0.0' (as dev dependency)
+- Updated all dependencies to latest
+- Update TypeScript types
+
 ## [2.3.1](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/2.3.1) (2020-06-01)
 Summary Changelog:
 - Fix TypeScript types

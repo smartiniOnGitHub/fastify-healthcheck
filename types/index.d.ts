@@ -1,19 +1,15 @@
-import * as fastify from 'fastify'
-import * as http from 'http'
+/// <reference types="node" />
+
+import underPressure from 'under-pressure'
+import { FastifyPlugin } from 'fastify'
 
 export interface FastifyHealthcheckOptions {
   healthcheckUrl?: string
   healthcheckUrlDisable?: boolean
   healthcheckUrlAlwaysFail?: boolean
   exposeUptime?: boolean
-  underPressureOptions?: Record<string, any>
+  underPressureOptions?: underPressure.UnderPressureOptions
 }
 
-export const fastifyHealthcheck: fastify.Plugin<
-http.Server,
-http.IncomingMessage,
-http.ServerResponse,
-FastifyHealthcheckOptions
->
-
+declare const fastifyHealthcheck: FastifyPlugin<FastifyHealthcheckOptions>
 export default fastifyHealthcheck

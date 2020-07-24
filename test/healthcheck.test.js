@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 the original author or authors.
+ * Copyright 2018-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -248,6 +248,7 @@ test('healthcheck with only some under-pressure options defined to always fail: 
       t.strictEqual(response.headers['content-type'], 'application/json; charset=utf-8')
       t.strictEqual(response.headers['retry-after'], '50')
       t.deepEqual(JSON.parse(body), {
+        code: 'FST_UNDER_PRESSURE',
         error: 'Service Unavailable',
         // message: 'Service Unavailable', // default message
         message: 'Under pressure!',
