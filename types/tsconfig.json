@@ -7,7 +7,7 @@
     "strict": true,
     "esModuleInterop": true
   },
-  "includes": [
+  "include": [
     "/types/*.test-d.ts",
     "/types/*.d.ts"
   ]
