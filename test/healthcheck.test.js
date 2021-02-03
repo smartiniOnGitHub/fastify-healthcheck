@@ -20,9 +20,10 @@ const sget = require('simple-get').concat
 const Fastify = require('fastify')
 const healthcheckPlugin = require('../')
 
-function sleep (msec) {
-  const start = Date.now()
-  while (Date.now() - start < msec) { }
+function sleep (ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms)
+  })
 }
 
 test('healthcheck with all defaults: does not return an error, but a good response (200) and some content', (t) => {
