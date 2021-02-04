@@ -15,6 +15,8 @@
  */
 'use strict'
 
+const { monitorEventLoopDelay } = require('perf_hooks')
+
 const test = require('tap').test
 const sget = require('simple-get').concat
 const Fastify = require('fastify')
@@ -24,6 +26,12 @@ function sleep (ms) {
   return new Promise((resolve) => {
     setTimeout(resolve, ms)
   })
+}
+
+function block (msec) {
+  const start = Date.now()
+  /* eslint-disable no-empty */
+  while (Date.now() - start < msec) { }
 }
 
 test('healthcheck with all defaults: does not return an error, but a good response (200) and some content', (t) => {
@@ -238,7 +246,9 @@ test('healthcheck with only some under-pressure options defined to always fail: 
     t.error(err)
     t.ok(!fastify.memoryUsage) // ensure is not exposed
 
-    process.nextTick(() => sleep(500))
+    // process.nextTick(() => sleep(500)) // does not work anymore here
+    process.nextTick(() => block(monitorEventLoopDelay ? 1500 : 500))
+
     sget({
       method: 'GET',
       timeout: 2000,
