@@ -26,13 +26,13 @@
     "test:coverage": "npm run test:unit -- --cov --coverage-report=html",
     "test:coverage:all": "npm run test:unit --  --cov",
     "test:types": "tsd",
-    "test:unit": "tap test/*.test.js",
+    "test:unit": "tap -j 1 test/*.test.js",
     "test:unit:debug": "tap -T --node-arg=--inspect-brk test/*.test.js",
     "test:unit:dev": "tap --watch --cov test/*.test.js",
     "test": "npm run lint && npm run lint:types && npm run test:types && npm run test:unit"
   },
   "dependencies": {
-    "under-pressure": "^5.5.0"
+    "under-pressure": "^5.6.0"
   },
   "devDependencies": {
     "@types/node": "^14.14.25",
@@ -44,6 +44,11 @@
     "tap": "^14.11.0",
     "tsd": "^0.14.0",
     "typescript": "^4.1.3"
+  },
+  "standard": {
+    "ignore": [
+      "types/*"
+    ]
   },
   "tsd": {
     "directory": "types",

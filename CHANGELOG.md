@@ -4,7 +4,7 @@
 [Full Changelog](https://github.com/smartiniOnGitHub/fastify-favicon/compare/3.0.0...3.1.0)
 Summary Changelog:
 - Updated requirements to Fastify '^3.11.0' (as dev dependency)
-- Updated requirements to Under-pressure '^5.5.0'
+- Updated requirements to Under-pressure '^5.6.0'
 - Update all dependencies to latest, and removed 'standardx' (as dev dependency)
 
 ## [3.0.0](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/3.0.0) (2020-07-24)
