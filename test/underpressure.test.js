@@ -15,14 +15,20 @@
  */
 'use strict'
 
+// const { promisify } = require('util')
+const { monitorEventLoopDelay } = require('perf_hooks')
+
 const test = require('tap').test
 const sget = require('simple-get').concat
+
 const Fastify = require('fastify')
 
-function sleep (ms) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms)
-  })
+// const wait = promisify(setTimeout)
+
+function block (msec) {
+  const start = Date.now()
+  /* eslint-disable no-empty */
+  while (Date.now() - start < msec) { }
 }
 
 // test the following features even directly with original under-pressure plugin
@@ -33,8 +39,7 @@ test('Should return 503 on maxHeapUsedBytes', t => {
 
   const fastify = Fastify()
   fastify.register(underPressure, {
-    maxHeapUsedBytes: 1,
-    sampleInterval: 2000
+    maxHeapUsedBytes: 1
   })
 
   fastify.get('/', (req, reply) => {
@@ -45,7 +50,8 @@ test('Should return 503 on maxHeapUsedBytes', t => {
     t.error(err)
     fastify.server.unref()
 
-    process.nextTick(() => sleep(1500))
+    process.nextTick(() => block(monitorEventLoopDelay ? 1500 : 500))
+
     sget({
       method: 'GET',
       url: address
