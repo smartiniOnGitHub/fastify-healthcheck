@@ -88,7 +88,7 @@ like in the following sequence:
 
 ## Requirements
 
-Fastify ^3.0.0 , Node.js 10.13.x or later.
+Fastify ^3.0.0 , Node.js 10 LTS (10.13.0) or later.
 Note that plugin releases 2.x are for Fastify 2.x, 3.x are for Fastify 3.x, etc.
 
 
