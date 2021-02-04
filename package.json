@@ -29,7 +29,7 @@
     "test:unit": "tap -j 1 test/*.test.js",
     "test:unit:debug": "tap -T --node-arg=--inspect-brk test/*.test.js",
     "test:unit:dev": "tap --watch --cov test/*.test.js",
-    "test": "npm run lint && npm run lint:types && npm run test:types && npm run test:unit"
+    "test": "npm run lint:standard && npm run lint:typescript && npm run test:types && npm run test:unit"
   },
   "dependencies": {
     "under-pressure": "^5.6.0"
