@@ -1,12 +1,13 @@
 # Change Log
 
-## [3.1.0](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/3.1.0) (unreleased)
+## [3.1.0](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/3.1.0) (2021-02-09)
 [Full Changelog](https://github.com/smartiniOnGitHub/fastify-favicon/compare/3.0.0...3.1.0)
 Summary Changelog:
 - Updated requirements to Under-pressure '^5.6.0'
 - Update all dependencies to latest, and removed 'standardx' (as dev dependency)
 - Fix some (now) failing tests
 - Fix exposure of uptime after requested the first time
+- Ensure compatibility with Under-pressure option to specify a custom route for healthcheck/status
 
 ## [3.0.0](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/3.0.0) (2020-07-24)
 [Full Changelog](https://github.com/smartiniOnGitHub/fastify-favicon/compare/2.3.1...3.0.0)
