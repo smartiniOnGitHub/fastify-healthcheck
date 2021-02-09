@@ -6,6 +6,7 @@ Summary Changelog:
 - Updated requirements to Under-pressure '^5.6.0'
 - Update all dependencies to latest, and removed 'standardx' (as dev dependency)
 - Fix some (now) failing tests
+- Fix exposure of uptime after requested the first time
 
 ## [3.0.0](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/3.0.0) (2020-07-24)
 [Full Changelog](https://github.com/smartiniOnGitHub/fastify-favicon/compare/2.3.1...3.0.0)
