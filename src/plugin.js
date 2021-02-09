@@ -69,7 +69,7 @@ function normalHandler (req, reply) {
 }
 
 function normalHandlerWithUptime (req, reply) {
-  reply.code(200).send({...payloadOK, uptime: process.uptime()})
+  reply.code(200).send({ ...payloadOK, uptime: process.uptime() })
 }
 
 function ensureIsString (arg, name) {
