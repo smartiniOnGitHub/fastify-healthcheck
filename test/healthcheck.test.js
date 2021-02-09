@@ -256,7 +256,7 @@ test('healthcheck with only some under-pressure options defined: does not return
 })
 
 test('healthcheck with only some under-pressure options defined to always fail: return an error (503) and some content', (t) => {
-  t.plan(7)
+  t.plan(8)
   const fastify = Fastify()
   t.tearDown(fastify.close.bind(fastify))
   fastify.register(healthcheckPlugin, {
@@ -286,12 +286,78 @@ test('healthcheck with only some under-pressure options defined to always fail: 
       t.strictEqual(response.statusCode, 503)
       t.strictEqual(response.headers['content-type'], 'application/json; charset=utf-8')
       t.strictEqual(response.headers['retry-after'], '50')
-      t.deepEqual(JSON.parse(body), {
+      const payload = JSON.parse(body)
+      t.notOk(payload.uptime) // not present in this reply payload
+      t.deepEqual(payload, {
         code: 'FST_UNDER_PRESSURE',
         error: 'Service Unavailable',
         // message: 'Service Unavailable', // default message
         message: 'Under pressure!',
         statusCode: 503
+      })
+    })
+  })
+})
+
+test('healthcheck with some under-pressure options defined for a custom response on healthcheck: does not return an error, but a good response (200) and some content', (t) => {
+  t.plan(13)
+  const fastify = Fastify()
+  t.tearDown(fastify.close.bind(fastify))
+  fastify.register(healthcheckPlugin, {
+    underPressureOptions: {
+      // set a custom healthcheck route, for example async
+      healthCheck: async () => {
+        t.pass('healthcheck called')
+        return {
+          some: 'value',
+          anotherValue: 'another',
+          status: 'override healthcheck response'
+        }
+      },
+      // set the schema for the custom healthcheck route, optional but reccomended
+      exposeStatusRoute: {
+        routeResponseSchemaOpts: {
+          some: { type: 'string' },
+          anotherValue: { type: 'string' }
+        }
+      }
+    } // set some under-pressure specific options set here
+  }) // configure this plugin with some custom options
+
+  fastify.listen(0, (err, address) => {
+    t.error(err)
+
+    // test usual plugin healthcheck route
+    process.nextTick(() => sleep(500))
+    sget({
+      method: 'GET',
+      timeout: 2000,
+      url: `${address}/health`
+    }, (err, response, body) => {
+      t.error(err)
+      t.strictEqual(response.statusCode, 200)
+      t.strictEqual(response.headers['content-type'], 'application/json; charset=utf-8')
+      const payload = JSON.parse(body)
+      t.notOk(payload.uptime) // not present in this reply payload
+      t.deepEqual(payload, { statusCode: 200, status: 'ok' })
+    })
+
+    // test under-pressure healthcheck route
+    process.nextTick(() => sleep(500))
+    sget({
+      method: 'GET',
+      timeout: 2000,
+      url: `${address}/status`
+    }, (err, response, body) => {
+      t.error(err)
+      t.strictEqual(response.statusCode, 200)
+      t.strictEqual(response.headers['content-type'], 'application/json; charset=utf-8')
+      const payload = JSON.parse(body)
+      t.notOk(payload.uptime) // not present in this reply payload
+      t.deepEqual(payload, {
+        some: 'value',
+        anotherValue: 'another',
+        status: 'override healthcheck response'
       })
     })
   })
