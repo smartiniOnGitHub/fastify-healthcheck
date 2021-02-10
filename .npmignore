@@ -36,6 +36,7 @@ test/
 .eslintcache
 .esdoc.json
 .yarn-integrity
+.taprc
 
 .editorconfig
 .gitattributes
