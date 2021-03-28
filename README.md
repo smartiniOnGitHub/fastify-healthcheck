@@ -92,6 +92,15 @@ Fastify ^3.0.0 , Node.js 10 LTS (10.13.0) or later.
 Note that plugin releases 2.x are for Fastify 2.x, 3.x are for Fastify 3.x, etc.
 
 
+## Sources
+
+Source code is all inside main repo:
+[fastify-healthcheck](https://github.com/smartiniOnGitHub/fastify-healthcheck).
+
+Documentation generated from source code (library API):
+[here](https://smartiniongithub.github.io/fastify-healthcheck/).
+
+
 ## Note
 
 To fully encapsulate `under-pressure` features inside the scope 

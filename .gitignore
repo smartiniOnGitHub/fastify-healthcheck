@@ -1,14 +1,16 @@
 # mac files
 .DS_Store
 
-# dotenv environment variables file
+# environment variables file
 .env
+.envrc
 
 # IDE/editors
 .vscode
 .cache
 .metadata
 .settings
+.idea
 
 # Optional npm cache directory
 .npm
@@ -19,8 +21,16 @@
 # Optional eslint cache
 .eslintcache
 
+# TypeScript cache
+*.tsbuildinfo
+
 # Yarn Integrity file
 .yarn-integrity
+
+# Clinic analysis/results
+profile*
+*clinic*
+*flamegraph*
 
 # Logs
 logs
@@ -60,8 +70,8 @@ build/Release
 node_modules/
 jspm_packages/
 
-# Typescript v1 declaration files
-typings/
+# Snowpack dependency directory
+web_modules/
 
 # Output of 'npm pack'
 *.tgz
@@ -84,10 +94,10 @@ Thumbs.db
 
 # temporary/work/output folders
 _old/
-# bin/
+bin/
 build/
-dist/
 docs/
+dist/
 out/
 private/
 temp/

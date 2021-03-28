@@ -4,6 +4,7 @@
 .cache
 .metadata
 .settings
+.idea
 
 _old/
 build/
@@ -31,6 +32,8 @@ test/
 .env
 .envrc
 .babelrc
+.clinic
+.dependabot
 .eslintignore
 .eslintrc*
 .eslintcache
@@ -44,6 +47,7 @@ test/
 
 gulpfile.*
 jsdoc-conf.*
+.jsdoc.json
 
 jenkins.sh
 tslint.json
