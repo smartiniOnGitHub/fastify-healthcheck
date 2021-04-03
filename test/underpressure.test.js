@@ -57,9 +57,9 @@ test('Should return 503 on maxHeapUsedBytes', t => {
       url: address
     }, (err, response, body) => {
       t.error(err)
-      t.strictEqual(response.statusCode, 503)
-      t.strictEqual(response.headers['retry-after'], '10')
-      t.deepEqual(JSON.parse(body), {
+      t.equal(response.statusCode, 503)
+      t.equal(response.headers['retry-after'], '10')
+      t.same(JSON.parse(body), {
         code: 'FST_UNDER_PRESSURE',
         error: 'Service Unavailable',
         message: 'Service Unavailable',

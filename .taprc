@@ -1,7 +1,9 @@
-esm: false
-jsx: false
-ts: false
-flow: false
-coverage: false
+# tap config file
+# color: false
 comments: true
+coverage: false
+# jsx: true
+# snapshot: true
 strict: true
+# timeout: 60
+# ts: true
