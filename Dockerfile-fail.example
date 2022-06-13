@@ -1,4 +1,4 @@
-FROM node:10
+FROM node:14-slim
 
 LABEL version="1.0.0"
 LABEL description="Example Fastify (Node.js) Docker Image"
@@ -32,5 +32,4 @@ EXPOSE 3000
 # healthcheck by calling the additional script exposed by the plugin
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s CMD npm start
 
-# CMD [ "npm", "start" ]
 CMD [ "npm", "run", "example-under-pressure-fail" ]
