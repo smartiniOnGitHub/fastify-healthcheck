@@ -1,6 +1,6 @@
 # Change Log
 
-## [4.0.0](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/4.0.0) (unreleased)
+## [4.0.0](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/4.0.0) (2022-06-13)
 [Full Changelog](https://github.com/smartiniOnGitHub/fastify-healthcheck/compare/3.2.0...4.0.0)
 Summary Changelog:
 - Updated requirements to Fastify '^4.0.0'; update code with related changes
@@ -8,6 +8,8 @@ Summary Changelog:
 - Update dependencies from 'under-pressure' to the new (scoped) 
   package '@fastify/under-pressure'
 - Update and simplified example and test code
+- Update example Docker files to use Node.js slim image as base 
+  to reduce image size and all is good
 - Update documentation from sources with JSDoc
 
 ## [3.2.0](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/3.2.0) (2022-06-13)
