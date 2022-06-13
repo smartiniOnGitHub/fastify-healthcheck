@@ -35,9 +35,10 @@ function block (msec) {
 const underPressure = require('under-pressure')
 
 test('Should return 503 on maxHeapUsedBytes', t => {
-  t.plan(5)
+  // t.plan(5)
 
   const fastify = Fastify()
+  t.teardown(fastify.close.bind(fastify))
   fastify.register(underPressure, {
     maxHeapUsedBytes: 1
   })
@@ -48,7 +49,6 @@ test('Should return 503 on maxHeapUsedBytes', t => {
 
   fastify.listen(0, (err, address) => {
     t.error(err)
-    fastify.server.unref()
 
     process.nextTick(() => block(monitorEventLoopDelay ? 1500 : 500))
 
@@ -65,7 +65,7 @@ test('Should return 503 on maxHeapUsedBytes', t => {
         message: 'Service Unavailable',
         statusCode: 503
       })
-      fastify.close()
+      t.end()
     })
   })
 })
