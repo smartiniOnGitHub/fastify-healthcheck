@@ -32,7 +32,7 @@ function block (msec) {
 }
 
 // test the following features even directly with original under-pressure plugin
-const underPressure = require('under-pressure')
+const underPressure = require('@fastify/under-pressure')
 
 test('Should return 503 on maxHeapUsedBytes', t => {
   // t.plan(5)
@@ -47,7 +47,7 @@ test('Should return 503 on maxHeapUsedBytes', t => {
     reply.send({ hello: 'world' })
   })
 
-  fastify.listen(0, (err, address) => {
+  fastify.listen({ port: 0 }, (err, address) => {
     t.error(err)
 
     process.nextTick(() => block(monitorEventLoopDelay ? 1500 : 500))

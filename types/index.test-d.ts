@@ -12,7 +12,7 @@ const options: FastifyHealthcheckOptions = {
 }
 app.register(healthcheckPlugin, options)
 
-app.listen(3000, (err, address) => {
+app.listen({ port: 3000 }, (err, address) => {
   if (err) throw err
   console.log(`Server listening on '${address}' ...`)
 })

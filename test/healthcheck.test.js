@@ -40,7 +40,7 @@ test('healthcheck with all defaults: does not return an error, but a good respon
   t.teardown(fastify.close.bind(fastify))
   fastify.register(healthcheckPlugin) // configure this plugin with its default options
 
-  fastify.listen(0, (err, address) => {
+  fastify.listen({ port: 0 }, (err, address) => {
     t.error(err)
 
     process.nextTick(() => sleep(500)) // not really needed, but could be useful to have
@@ -66,7 +66,7 @@ test('healthcheck on a custom route: does not return an error, but a good respon
     healthcheckUrl: '/custom-health'
   }) // configure this plugin with some custom options
 
-  fastify.listen(0, (err, address) => {
+  fastify.listen({ port: 0 }, (err, address) => {
     t.error(err)
 
     sget({
@@ -106,7 +106,7 @@ test('healthcheck on a disabled route (default or custom): return a not found er
     healthcheckUrlDisable: true
   }) // configure this plugin with some custom options
 
-  fastify.listen(0, (err, address) => {
+  fastify.listen({ port: 0 }, (err, address) => {
     t.error(err)
 
     sget({
@@ -148,7 +148,7 @@ test('healthcheck with always failure flag: always return an error, (500) and so
     healthcheckUrlAlwaysFail: true
   }) // configure this plugin with some custom options
 
-  fastify.listen(0, (err, address) => {
+  fastify.listen({ port: 0 }, (err, address) => {
     t.error(err)
 
     sget({
@@ -173,7 +173,7 @@ test('healthcheck with healthcheck option enabled to return even process uptime:
     exposeUptime: true
   }) // configure this plugin with some custom options
 
-  fastify.listen(0, (err, address) => {
+  fastify.listen({ port: 0 }, (err, address) => {
     t.error(err)
 
     process.nextTick(() => sleep(500))
@@ -206,7 +206,7 @@ test('healthcheck with all healthcheck specific options undefined: does not retu
     underPressureOptions: { } // no under-pressure specific options set here
   }) // configure this plugin with some custom options
 
-  fastify.listen(0, (err, address) => {
+  fastify.listen({ port: 0 }, (err, address) => {
     t.error(err)
 
     process.nextTick(() => sleep(500))
@@ -243,7 +243,7 @@ test('healthcheck with only some under-pressure options defined: does not return
     } // set some under-pressure specific options set here
   }) // configure this plugin with some custom options
 
-  fastify.listen(0, (err, address) => {
+  fastify.listen({ port: 0 }, (err, address) => {
     t.error(err)
     t.ok(!fastify.memoryUsage) // ensure is not exposed
 
@@ -277,7 +277,7 @@ test('healthcheck with only some under-pressure options defined to always fail: 
     } // set some under-pressure specific options set here
   }) // configure this plugin with some custom options
 
-  fastify.listen(0, (err, address) => {
+  fastify.listen({ port: 0 }, (err, address) => {
     t.error(err)
     t.ok(!fastify.memoryUsage) // ensure is not exposed
 
@@ -332,7 +332,7 @@ test('healthcheck with some under-pressure options defined for a custom response
     } // set some under-pressure specific options set here
   }) // configure this plugin with some custom options
 
-  fastify.listen(0, (err, address) => {
+  fastify.listen({ port: 0 }, (err, address) => {
     t.error(err)
 
     // test usual plugin healthcheck route
