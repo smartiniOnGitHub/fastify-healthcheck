@@ -39,7 +39,7 @@ function fastifyHealthcheck (fastify, options, next) {
   // note that it will trigger automatic failure responses
   // in all routes defined here when current values are higher
   // that threshold values set
-  fastify.register(require('under-pressure'), underPressureOptions)
+  fastify.register(require('@fastify/under-pressure'), underPressureOptions)
 
   let healthcheckHandler = normalHandler
   if (exposeUptime === true) {

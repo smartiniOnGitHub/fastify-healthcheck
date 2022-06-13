@@ -25,7 +25,7 @@ will be used, but if needed can be specified:
 - `exposeUptime`, to return even Node.js process uptime (by default disabled)
 
 Under the hood, the healthcheck status is determined by the 
-[under-pressure](https://www.npmjs.com/package/under-pressure) plugin, 
+[@fastify/under-pressure](https://www.npmjs.com/package/@fastify/under-pressure) plugin, 
 used here as a dependency; so it's possible to specify all its
 configuration options here.
 
@@ -47,7 +47,7 @@ fastify.register(require('fastify-healthcheck'))
 // fastify.register(require('fastify-healthcheck'), { healthcheckUrl: '/custom-health', healthcheckUrlAlwaysFail: true })
 //
 
-fastify.listen(3000)
+fastify.listen({ port: 3000, host: 'localhost' })
 
 // To test, for example (in another terminal session) do:
 // `npm start`, or
@@ -85,8 +85,8 @@ like in the following sequence:
 
 ## Requirements
 
-Fastify ^3.11.0 , Node.js 10 LTS (10.13.0) or later.
-Note that plugin releases 2.x are for Fastify 2.x, 3.x are for Fastify 3.x, etc.
+Fastify ^4.0.0 , Node.js 14 LTS (14.15.0) or later.
+Note that plugin releases 3.x are for Fastify 3.x, 4.x are for Fastify 4.x, etc.
 
 
 ## Sources

@@ -1,6 +1,6 @@
 /// <reference types="node" />
 
-import underPressure from 'under-pressure'
+import underPressure from '@fastify/under-pressure'
 import { FastifyPluginCallback } from 'fastify'
 
 export interface FastifyHealthcheckOptions {
