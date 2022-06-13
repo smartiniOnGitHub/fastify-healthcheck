@@ -37,7 +37,7 @@ function block (msec) {
 test('healthcheck with all defaults: does not return an error, but a good response (200) and some content', (t) => {
   // t.plan(5)
   const fastify = Fastify()
-  t.teardown(fastify.close.bind(fastify))
+  t.teardown(() => { fastify.close() })
   fastify.register(healthcheckPlugin) // configure this plugin with its default options
 
   fastify.listen({ port: 0 }, (err, address) => {
@@ -59,9 +59,8 @@ test('healthcheck with all defaults: does not return an error, but a good respon
 })
 
 test('healthcheck on a custom route: does not return an error, but a good response (200) and some content', (t) => {
-  // t.plan(11)
   const fastify = Fastify()
-  t.teardown(fastify.close.bind(fastify))
+  t.teardown(() => { fastify.close() })
   fastify.register(healthcheckPlugin, {
     healthcheckUrl: '/custom-health'
   }) // configure this plugin with some custom options
@@ -98,9 +97,8 @@ test('healthcheck on a custom route: does not return an error, but a good respon
 })
 
 test('healthcheck on a disabled route (default or custom): return a not found error (404) and some content', (t) => {
-  // t.plan(13)
   const fastify = Fastify()
-  t.teardown(fastify.close.bind(fastify))
+  t.teardown(() => { fastify.close() })
   fastify.register(healthcheckPlugin, {
     healthcheckUrl: '/custom-health',
     healthcheckUrlDisable: true
@@ -140,9 +138,8 @@ test('healthcheck on a disabled route (default or custom): return a not found er
 })
 
 test('healthcheck with always failure flag: always return an error, (500) and some content', (t) => {
-  // t.plan(5)
   const fastify = Fastify()
-  t.teardown(fastify.close.bind(fastify))
+  t.teardown(() => { fastify.close() })
   fastify.register(healthcheckPlugin, {
     // 'healthcheckUrl': '/custom-health',
     healthcheckUrlAlwaysFail: true
@@ -166,9 +163,8 @@ test('healthcheck with always failure flag: always return an error, (500) and so
 })
 
 test('healthcheck with healthcheck option enabled to return even process uptime: ensure a good response (200) will be returned', (t) => {
-  // t.plan(7)
   const fastify = Fastify()
-  t.teardown(fastify.close.bind(fastify))
+  t.teardown(() => { fastify.close() })
   fastify.register(healthcheckPlugin, {
     exposeUptime: true
   }) // configure this plugin with some custom options
@@ -195,9 +191,8 @@ test('healthcheck with healthcheck option enabled to return even process uptime:
 })
 
 test('healthcheck with all healthcheck specific options undefined: does not return an error, but a good response (200) and under-pressure defaults', (t) => {
-  // t.plan(8)
   const fastify = Fastify()
-  t.teardown(fastify.close.bind(fastify))
+  t.teardown(() => { fastify.close() })
   fastify.register(healthcheckPlugin, {
     healthcheckUrl: undefined,
     healthcheckUrlDisable: undefined,
@@ -229,9 +224,8 @@ test('healthcheck with all healthcheck specific options undefined: does not retu
 })
 
 test('healthcheck with only some under-pressure options defined: does not return an error, but a good response (200) and some content', (t) => {
-  // t.plan(6)
   const fastify = Fastify()
-  t.teardown(fastify.close.bind(fastify))
+  t.teardown(() => { fastify.close() })
   fastify.register(healthcheckPlugin, {
     underPressureOptions: {
       // exposeStatusRoute: true, // no effect here
@@ -263,9 +257,8 @@ test('healthcheck with only some under-pressure options defined: does not return
 })
 
 test('healthcheck with only some under-pressure options defined to always fail: return an error (503) and some content', (t) => {
-  // t.plan(8)
   const fastify = Fastify()
-  t.teardown(fastify.close.bind(fastify))
+  t.teardown(() => { fastify.close() })
   fastify.register(healthcheckPlugin, {
     underPressureOptions: {
       // exposeStatusRoute: true, // no effect here
@@ -308,9 +301,8 @@ test('healthcheck with only some under-pressure options defined to always fail: 
 })
 
 test('healthcheck with some under-pressure options defined for a custom response on healthcheck: does not return an error, but a good response (200) and some content', (t) => {
-  // t.plan(13)
   const fastify = Fastify()
-  t.teardown(fastify.close.bind(fastify))
+  t.teardown(() => { fastify.close() })
   fastify.register(healthcheckPlugin, {
     underPressureOptions: {
       // set a custom healthcheck route, for example async

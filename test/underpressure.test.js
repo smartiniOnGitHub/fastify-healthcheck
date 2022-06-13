@@ -38,7 +38,7 @@ test('Should return 503 on maxHeapUsedBytes', t => {
   // t.plan(5)
 
   const fastify = Fastify()
-  t.teardown(fastify.close.bind(fastify))
+  t.teardown(() => { fastify.close() })
   fastify.register(underPressure, {
     maxHeapUsedBytes: 1
   })
