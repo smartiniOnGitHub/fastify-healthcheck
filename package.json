@@ -5,6 +5,7 @@
   "main": "src/plugin",
   "types": "types/index.d.ts",
   "scripts": {
+    "clean:install": "rm -rf ./package-lock.json ./node_modules/",
     "dependency:log": "npm list > ./temp/dependencies.log",
     "docker:build:fail": "docker build -t fastify-healthcheck-example -f Dockerfile-fail.example .",
     "docker:build": "docker build -t fastify-healthcheck-example -f Dockerfile.example .",
