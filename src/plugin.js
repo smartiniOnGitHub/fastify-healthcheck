@@ -15,10 +15,32 @@
  */
 'use strict'
 
+/**
+ * Plugin:
+ * this module exports the plugin as a function.
+ * @module plugin
+ */
+
 const payloadOK = { statusCode: 200, status: 'ok' }
 const payloadKO = { statusCode: 500, status: 'ko' }
 
-function fastifyHealthcheck (fastify, options, next) {
+/**
+ * Plugin implementation.
+ *
+ * @param {!object} fastify Fastify instance
+ * @param {!object} options plugin configuration options
+ * <ul>
+ *     <li>healthcheckUrl (string, default `/health`) for the route of the health check,</li>
+ *     <li>healthcheckUrlDisable (boolean, default false) flag to disable health check route,</li>
+ *     <li>healthcheckUrlAlwaysFail (boolean, default false) flag to always return failure from health check route (mainly for testing purposes),</li>
+ *     <li>exposeUptime (boolean, default false) flag to show even process uptime in health check results,</li>
+ *     <li>underPressureOptions (object, default empty) for options to send directly to under-pressure,</li>
+ * </ul>
+ * @param {!function} done callback, to call as last step
+ *
+ * @namespace
+ */
+function fastifyHealthcheck (fastify, options, done) {
   const {
     healthcheckUrl = '/health',
     healthcheckUrlDisable = false,
@@ -57,20 +79,46 @@ function fastifyHealthcheck (fastify, options, next) {
     })
   }
 
-  next()
+  done()
 }
 
+/**
+ * Handler that generates a failure response.
+ *
+ * @param {!req} req the request
+ * @param {!reply} reply the response
+ *
+ * @private
+ */
 function failHandler (req, reply) {
   reply.code(500).send(payloadKO)
 }
 
+/**
+ * Handler that generates a success response.
+ *
+ * @param {!req} req the request
+ * @param {!reply} reply the response
+ *
+ * @private
+ */
 function normalHandler (req, reply) {
   reply.code(200).send(payloadOK)
 }
 
+/**
+ * Handler that generates a success response, and show even process uptime.
+ *
+ * @param {!req} req the request
+ * @param {!reply} reply the response
+ *
+ * @private
+ */
 function normalHandlerWithUptime (req, reply) {
   reply.code(200).send({ ...payloadOK, uptime: process.uptime() })
 }
+
+// utility functions
 
 function ensureIsString (arg, name) {
   if (arg !== null && typeof arg !== 'string') {
