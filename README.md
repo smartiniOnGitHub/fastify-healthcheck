@@ -23,11 +23,12 @@ will be used, but if needed can be specified:
 - `healthcheckUrlDisable`, to not publish the healthcheck route
 - `healthcheckUrlAlwaysFail`, to always return failure responses (useful to test failure responses)
 - `exposeUptime`, to return even Node.js process uptime (by default disabled)
+- `underPressureOptions`, for options to send directly to under-pressure
 
 Under the hood, the healthcheck status is determined by the 
 [@fastify/under-pressure](https://www.npmjs.com/package/@fastify/under-pressure) plugin, 
 used here as a dependency; so it's possible to specify all its
-configuration options here.
+configuration options in related option.
 
 To use all default values for `healthcheck` options, do not set its options
 (or set with undefined values); in that way no `under-pressure` specific
@@ -85,7 +86,7 @@ like in the following sequence:
 
 ## Requirements
 
-Fastify ^4.0.1 , Node.js 14 LTS (14.15.0) or later.
+Fastify ^4.5.3 , Node.js 14 LTS (14.15.0) or later.
 Note that plugin releases 3.x are for Fastify 3.x, 4.x are for Fastify 4.x, etc.
 
 
