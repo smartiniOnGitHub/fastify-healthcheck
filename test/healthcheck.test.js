@@ -20,7 +20,7 @@ const { monitorEventLoopDelay } = require('perf_hooks')
 const test = require('tap').test
 const sget = require('simple-get').concat
 const Fastify = require('fastify')
-const healthcheckPlugin = require('../')
+const healthcheckPlugin = require('..')
 
 function sleep (ms) {
   return new Promise((resolve) => {
