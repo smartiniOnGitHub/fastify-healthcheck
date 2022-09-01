@@ -15,7 +15,8 @@
  */
 'use strict'
 
-const { monitorEventLoopDelay } = require('perf_hooks')
+const { monitorEventLoopDelay } = require('node:perf_hooks')
+const process = require('node:process')
 
 const test = require('tap').test
 const sget = require('simple-get').concat
@@ -34,166 +35,152 @@ function block (msec) {
   while (Date.now() - start < msec) { }
 }
 
-test('healthcheck with all defaults: does not return an error, but a good response (200) and some content', (t) => {
-  // t.plan(5)
+const jsonMimeType = 'application/json; charset=utf-8'
+const successResponse = { statusCode: 200, status: 'ok' }
+const failureResponse = { statusCode: 500, status: 'ko' }
+
+test('healthcheck with all defaults: does not return an error, but a good response (200) and some content', async (t) => {
+  // t.plan(3)
   const fastify = Fastify()
   t.teardown(() => { fastify.close() })
-  fastify.register(healthcheckPlugin) // configure this plugin with its default options
+  await fastify.register(healthcheckPlugin) // configure this plugin with its default options
+  await fastify.listen({ port: 0 })
 
-  fastify.listen({ port: 0 }, (err, address) => {
-    t.error(err)
-
-    process.nextTick(() => sleep(500)) // not really needed, but could be useful to have
-    sget({
-      method: 'GET',
-      timeout: 2000,
-      url: `${address}/health`
-    }, (err, response, body) => {
-      t.error(err)
-      t.equal(response.statusCode, 200)
-      t.equal(response.headers['content-type'], 'application/json; charset=utf-8')
-      t.same(JSON.parse(body), { statusCode: 200, status: 'ok' })
-      t.end()
-    })
+  // process.nextTick(() => sleep(500)) // not really needed, but could be useful to have
+  const response = await fastify.inject({
+    method: 'GET',
+    timeout: 2000,
+    url: '/health'
   })
+  t.equal(response.statusCode, 200)
+  t.equal(response.headers['content-type'], jsonMimeType)
+  t.same(JSON.parse(response.body), successResponse)
+  t.end()
 })
 
-test('healthcheck on a custom route: does not return an error, but a good response (200) and some content', (t) => {
+test('healthcheck on a custom route: does not return an error, but a good response (200) and some content', async (t) => {
   const fastify = Fastify()
   t.teardown(() => { fastify.close() })
-  fastify.register(healthcheckPlugin, {
+  await fastify.register(healthcheckPlugin, {
     healthcheckUrl: '/custom-health'
   }) // configure this plugin with some custom options
+  await fastify.listen({ port: 0 })
 
-  fastify.listen({ port: 0 }, (err, address) => {
-    t.error(err)
-
-    sget({
+  {
+    const response = await fastify.inject({
       method: 'GET',
       timeout: 2000,
-      url: `${address}/custom-health`
-    }, (err, response, body) => {
-      t.error(err)
-      t.equal(response.statusCode, 200)
-      t.equal(response.headers['content-type'], 'application/json; charset=utf-8')
-      t.same(JSON.parse(body), { statusCode: 200, status: 'ok' })
+      url: '/custom-health'
     })
+    t.equal(response.statusCode, 200)
+    t.equal(response.headers['content-type'], jsonMimeType)
+    t.same(JSON.parse(response.body), successResponse)
+  }
 
+  {
     // ensure default url is not exposed
-    sget({
+    const response = await fastify.inject({
       method: 'GET',
       timeout: 2000,
-      url: `${address}/health`
-    }, (err, response, body) => {
-      t.error(err)
-      t.equal(response.statusCode, 404)
-      t.equal(response.headers['content-type'], 'application/json; charset=utf-8')
-      t.equal(JSON.parse(body).statusCode, 404)
-      t.equal(JSON.parse(body).error, 'Not Found')
-      t.equal(JSON.parse(body).message, 'Route GET:/health not found')
-      t.end()
+      url: '/health'
     })
-  })
+    t.equal(response.statusCode, 404)
+    t.equal(response.headers['content-type'], jsonMimeType)
+    t.same(JSON.parse(response.body), { message: 'Route GET:/health not found', error: 'Not Found', statusCode: 404 })
+  }
+
+  t.end()
 })
 
-test('healthcheck on a disabled route (default or custom): return a not found error (404) and some content', (t) => {
+test('healthcheck on a disabled route (default or custom): return a not found error (404) and some content', async (t) => {
   const fastify = Fastify()
   t.teardown(() => { fastify.close() })
-  fastify.register(healthcheckPlugin, {
+  await fastify.register(healthcheckPlugin, {
     healthcheckUrl: '/custom-health',
     healthcheckUrlDisable: true
   }) // configure this plugin with some custom options
 
-  fastify.listen({ port: 0 }, (err, address) => {
-    t.error(err)
+  await fastify.listen({ port: 0 })
 
-    sget({
+  {
+    const response = await fastify.inject({
       method: 'GET',
       timeout: 2000,
-      url: `${address}/custom-health`
-    }, (err, response, body) => {
-      t.error(err)
-      t.equal(response.statusCode, 404)
-      t.equal(response.headers['content-type'], 'application/json; charset=utf-8')
-      t.equal(JSON.parse(body).statusCode, 404)
-      t.equal(JSON.parse(body).error, 'Not Found')
-      t.equal(JSON.parse(body).message, 'Route GET:/custom-health not found')
+      url: '/custom-health'
     })
+    t.equal(response.statusCode, 404)
+    t.equal(response.headers['content-type'], jsonMimeType)
+    t.equal(JSON.parse(response.body).statusCode, 404)
+    t.equal(JSON.parse(response.body).error, 'Not Found')
+    t.equal(JSON.parse(response.body).message, 'Route GET:/custom-health not found')
+  }
 
+  {
     // ensure default url is not exposed
-    sget({
+    const response = await fastify.inject({
       method: 'GET',
       timeout: 2000,
-      url: `${address}/health`
-    }, (err, response, body) => {
-      t.error(err)
-      t.equal(response.statusCode, 404)
-      t.equal(response.headers['content-type'], 'application/json; charset=utf-8')
-      t.equal(JSON.parse(body).statusCode, 404)
-      t.equal(JSON.parse(body).error, 'Not Found')
-      t.equal(JSON.parse(body).message, 'Route GET:/health not found')
-      t.end()
+      url: '/health'
     })
-  })
+    t.equal(response.statusCode, 404)
+    t.equal(response.headers['content-type'], jsonMimeType)
+    t.equal(JSON.parse(response.body).statusCode, 404)
+    t.equal(JSON.parse(response.body).error, 'Not Found')
+    t.equal(JSON.parse(response.body).message, 'Route GET:/health not found')
+  }
+
+  t.end()
 })
 
-test('healthcheck with always failure flag: always return an error, (500) and some content', (t) => {
+test('healthcheck with always failure flag: always return an error, (500) and some content', async (t) => {
   const fastify = Fastify()
   t.teardown(() => { fastify.close() })
-  fastify.register(healthcheckPlugin, {
+  await fastify.register(healthcheckPlugin, {
     // 'healthcheckUrl': '/custom-health',
     healthcheckUrlAlwaysFail: true
   }) // configure this plugin with some custom options
 
-  fastify.listen({ port: 0 }, (err, address) => {
-    t.error(err)
+  await fastify.listen({ port: 0 })
 
-    sget({
-      method: 'GET',
-      timeout: 2000,
-      url: `${address}/health`
-    }, (err, response, body) => {
-      t.error(err)
-      t.equal(response.statusCode, 500)
-      t.equal(response.headers['content-type'], 'application/json; charset=utf-8')
-      t.same(JSON.parse(body), { statusCode: 500, status: 'ko' })
-      t.end()
-    })
+  const response = await fastify.inject({
+    method: 'GET',
+    timeout: 2000,
+    url: '/health'
   })
+  t.equal(response.statusCode, 500)
+  t.equal(response.headers['content-type'], jsonMimeType)
+  t.same(JSON.parse(response.body), failureResponse)
+
+  t.end()
 })
 
-test('healthcheck with healthcheck option enabled to return even process uptime: ensure a good response (200) will be returned', (t) => {
+test('healthcheck with healthcheck option enabled to return even process uptime: ensure a good response (200) will be returned', async (t) => {
   const fastify = Fastify()
   t.teardown(() => { fastify.close() })
-  fastify.register(healthcheckPlugin, {
+  await fastify.register(healthcheckPlugin, {
     exposeUptime: true
   }) // configure this plugin with some custom options
 
-  fastify.listen({ port: 0 }, (err, address) => {
-    t.error(err)
+  await fastify.listen({ port: 0 })
 
-    process.nextTick(() => sleep(500))
-    sget({
-      method: 'GET',
-      timeout: 2000,
-      url: `${address}/health`
-    }, (err, response, body) => {
-      t.error(err)
-      t.equal(response.statusCode, 200)
-      t.equal(response.headers['content-type'], 'application/json; charset=utf-8')
-      const payload = JSON.parse(body)
-      t.equal(payload.statusCode, 200)
-      t.equal(payload.status, 'ok')
-      t.ok(payload.uptime > 0.0)
-      t.end()
-    })
+  const response = await fastify.inject({
+    method: 'GET',
+    timeout: 2000,
+    url: '/health'
   })
+  t.equal(response.statusCode, 200)
+  t.equal(response.headers['content-type'], jsonMimeType)
+  const payload = JSON.parse(response.body)
+  t.equal(payload.statusCode, 200)
+  t.equal(payload.status, 'ok')
+  t.ok(payload.uptime > 0.0)
+  t.end()
 })
 
-test('healthcheck with all healthcheck specific options undefined: does not return an error, but a good response (200) and under-pressure defaults', (t) => {
+test('healthcheck with all healthcheck specific options undefined: does not return an error, but a good response (200) and under-pressure defaults', async (t) => {
   const fastify = Fastify()
   t.teardown(() => { fastify.close() })
-  fastify.register(healthcheckPlugin, {
+  await fastify.register(healthcheckPlugin, {
     healthcheckUrl: undefined,
     healthcheckUrlDisable: undefined,
     healthcheckUrlAlwaysFail: undefined,
@@ -201,32 +188,27 @@ test('healthcheck with all healthcheck specific options undefined: does not retu
     underPressureOptions: { } // no under-pressure specific options set here
   }) // configure this plugin with some custom options
 
-  fastify.listen({ port: 0 }, (err, address) => {
-    t.error(err)
+  await fastify.listen({ port: 0 })
 
-    process.nextTick(() => sleep(500))
-    sget({
-      method: 'GET',
-      timeout: 2000,
-      url: `${address}/health`
-    }, (err, response, body) => {
-      t.error(err)
-      t.equal(response.statusCode, 200)
-      t.equal(response.headers['content-type'], 'application/json; charset=utf-8')
-      const payload = JSON.parse(body)
-      t.equal(payload.statusCode, 200)
-      t.equal(payload.status, 'ok')
-      t.notOk(payload.uptime) // not present in this reply payload
-      t.same(payload, { statusCode: 200, status: 'ok' })
-      t.end()
-    })
+  const response = await fastify.inject({
+    method: 'GET',
+    timeout: 2000,
+    url: '/health'
   })
+  t.equal(response.statusCode, 200)
+  t.equal(response.headers['content-type'], jsonMimeType)
+  const payload = JSON.parse(response.body)
+  t.equal(payload.statusCode, 200)
+  t.equal(payload.status, 'ok')
+  t.notOk(payload.uptime) // not present in this reply payload
+  t.same(payload, successResponse)
+  t.end()
 })
 
-test('healthcheck with only some under-pressure options defined: does not return an error, but a good response (200) and some content', (t) => {
+test('healthcheck with only some under-pressure options defined: does not return an error, but a good response (200) and some content', async (t) => {
   const fastify = Fastify()
   t.teardown(() => { fastify.close() })
-  fastify.register(healthcheckPlugin, {
+  await fastify.register(healthcheckPlugin, {
     underPressureOptions: {
       // exposeStatusRoute: true, // no effect here
       maxEventLoopDelay: 1000,
@@ -237,23 +219,83 @@ test('healthcheck with only some under-pressure options defined: does not return
     } // set some under-pressure specific options set here
   }) // configure this plugin with some custom options
 
-  fastify.listen({ port: 0 }, (err, address) => {
-    t.error(err)
-    t.ok(!fastify.memoryUsage) // ensure is not exposed
+  await fastify.listen({ port: 0 })
 
+  t.ok(!fastify.memoryUsage) // ensure is not exposed
+  // process.nextTick(() => sleep(500))
+  const response = await fastify.inject({
+    method: 'GET',
+    timeout: 2000,
+    url: '/health'
+  })
+  t.equal(response.statusCode, 200)
+  t.equal(response.headers['content-type'], jsonMimeType)
+  t.same(JSON.parse(response.body), successResponse)
+
+  t.end()
+})
+
+test('healthcheck with some under-pressure options defined for a custom response on healthcheck: does not return an error, but a good response (200) and some content', async (t) => {
+  const fastify = Fastify()
+  t.teardown(() => { fastify.close() })
+  await fastify.register(healthcheckPlugin, {
+    underPressureOptions: {
+      // set a custom healthcheck route, for example async
+      healthCheck: async () => {
+        t.pass('healthcheck called')
+        return {
+          some: 'value',
+          anotherValue: 'another',
+          status: 'override healthcheck response'
+        }
+      },
+      // set the schema for the custom healthcheck route, optional but reccomended
+      exposeStatusRoute: {
+        routeResponseSchemaOpts: {
+          some: { type: 'string' },
+          anotherValue: { type: 'string' }
+        }
+      }
+    } // set some under-pressure specific options set here
+  }) // configure this plugin with some custom options
+
+  await fastify.listen({ port: 0 })
+
+  {
+    // test usual plugin healthcheck route
     process.nextTick(() => sleep(500))
-    sget({
+    const response = await fastify.inject({
       method: 'GET',
       timeout: 2000,
-      url: `${address}/health`
-    }, (err, response, body) => {
-      t.error(err)
-      t.equal(response.statusCode, 200)
-      t.equal(response.headers['content-type'], 'application/json; charset=utf-8')
-      t.same(JSON.parse(body), { statusCode: 200, status: 'ok' })
-      t.end()
+      url: '/health'
     })
-  })
+    t.equal(response.statusCode, 200)
+    t.equal(response.headers['content-type'], jsonMimeType)
+    const payload = JSON.parse(response.body)
+    t.notOk(payload.uptime) // not present in this reply payload
+    t.same(JSON.parse(response.body), successResponse)
+  }
+
+  {
+    // test under-pressure healthcheck route
+    process.nextTick(() => sleep(500))
+    const response = await fastify.inject({
+      method: 'GET',
+      timeout: 2000,
+      url: '/status'
+    })
+    t.equal(response.statusCode, 200)
+    t.equal(response.headers['content-type'], jsonMimeType)
+    const payload = JSON.parse(response.body)
+    t.notOk(payload.uptime) // not present in this reply payload
+    t.same(payload, {
+      some: 'value',
+      anotherValue: 'another',
+      status: 'override healthcheck response'
+    })
+  }
+
+  t.end()
 })
 
 test('healthcheck with only some under-pressure options defined to always fail: return an error (503) and some content', (t) => {
@@ -277,6 +319,7 @@ test('healthcheck with only some under-pressure options defined to always fail: 
     // process.nextTick(() => sleep(500)) // does not work anymore here
     process.nextTick(() => block(monitorEventLoopDelay ? 1500 : 500))
 
+    // can't use fastify inject here ...
     sget({
       method: 'GET',
       timeout: 2000,
@@ -284,7 +327,7 @@ test('healthcheck with only some under-pressure options defined to always fail: 
     }, (err, response, body) => {
       t.error(err)
       t.equal(response.statusCode, 503)
-      t.equal(response.headers['content-type'], 'application/json; charset=utf-8')
+      t.equal(response.headers['content-type'], jsonMimeType)
       t.equal(response.headers['retry-after'], '50')
       const payload = JSON.parse(body)
       t.notOk(payload.uptime) // not present in this reply payload
@@ -294,70 +337,6 @@ test('healthcheck with only some under-pressure options defined to always fail: 
         // message: 'Service Unavailable', // default message
         message: 'Under pressure!',
         statusCode: 503
-      })
-      t.end()
-    })
-  })
-})
-
-test('healthcheck with some under-pressure options defined for a custom response on healthcheck: does not return an error, but a good response (200) and some content', (t) => {
-  const fastify = Fastify()
-  t.teardown(() => { fastify.close() })
-  fastify.register(healthcheckPlugin, {
-    underPressureOptions: {
-      // set a custom healthcheck route, for example async
-      healthCheck: async () => {
-        t.pass('healthcheck called')
-        return {
-          some: 'value',
-          anotherValue: 'another',
-          status: 'override healthcheck response'
-        }
-      },
-      // set the schema for the custom healthcheck route, optional but reccomended
-      exposeStatusRoute: {
-        routeResponseSchemaOpts: {
-          some: { type: 'string' },
-          anotherValue: { type: 'string' }
-        }
-      }
-    } // set some under-pressure specific options set here
-  }) // configure this plugin with some custom options
-
-  fastify.listen({ port: 0 }, (err, address) => {
-    t.error(err)
-
-    // test usual plugin healthcheck route
-    process.nextTick(() => sleep(500))
-    sget({
-      method: 'GET',
-      timeout: 2000,
-      url: `${address}/health`
-    }, (err, response, body) => {
-      t.error(err)
-      t.equal(response.statusCode, 200)
-      t.equal(response.headers['content-type'], 'application/json; charset=utf-8')
-      const payload = JSON.parse(body)
-      t.notOk(payload.uptime) // not present in this reply payload
-      t.same(payload, { statusCode: 200, status: 'ok' })
-    })
-
-    // test under-pressure healthcheck route
-    process.nextTick(() => sleep(500))
-    sget({
-      method: 'GET',
-      timeout: 2000,
-      url: `${address}/status`
-    }, (err, response, body) => {
-      t.error(err)
-      t.equal(response.statusCode, 200)
-      t.equal(response.headers['content-type'], 'application/json; charset=utf-8')
-      const payload = JSON.parse(body)
-      t.notOk(payload.uptime) // not present in this reply payload
-      t.same(payload, {
-        some: 'value',
-        anotherValue: 'another',
-        status: 'override healthcheck response'
       })
       t.end()
     })
