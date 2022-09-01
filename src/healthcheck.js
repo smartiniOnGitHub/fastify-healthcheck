@@ -21,7 +21,7 @@
 
 // use Node.js 'http' integrated module,
 // even to avoid dependencies clash
-const http = require('http')
+const http = require('node:http')
 
 const options = {
   timeout: 5000, // 5 sec

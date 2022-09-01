@@ -32,9 +32,9 @@ fastify.register(require('../src/plugin'), {
 
 // example to handle a sample home request to serve a static page, optional here
 fastify.get('/', function (req, reply) {
-  const path = require('path')
+  const path = require('node:path')
   const scriptRelativeFolder = path.join(__dirname, path.sep)
-  const fs = require('fs')
+  const fs = require('node:fs')
   const stream = fs.createReadStream(path.join(scriptRelativeFolder, 'home.html'))
   reply.type('text/html; charset=utf-8').send(stream)
 })
