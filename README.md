@@ -86,7 +86,7 @@ like in the following sequence:
 
 ## Requirements
 
-Fastify ^4.5.3 , Node.js 14 LTS (14.15.0) or later.
+Fastify ^4.10.2 , Node.js 14 LTS (14.15.0) or later.
 Note that plugin releases 3.x are for Fastify 3.x, 4.x are for Fastify 4.x, etc.
 
 

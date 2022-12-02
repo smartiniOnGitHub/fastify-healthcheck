@@ -1,6 +1,6 @@
 {
   "name": "fastify-healthcheck",
-  "version": "4.2.0",
+  "version": "4.3.0",
   "description": "Fastify Plugin to serve responses for health checks",
   "main": "src/plugin",
   "types": "types/index.d.ts",
@@ -41,15 +41,15 @@
     "@fastify/under-pressure": "^8.1.0"
   },
   "devDependencies": {
-    "@types/node": "^18.7.14",
-    "@typescript-eslint/eslint-plugin": "^5.36.1",
-    "@typescript-eslint/parser": "^5.36.1",
-    "fastify": "^4.5.3",
-    "jsdoc": "^3.6.11",
+    "@types/node": "^18.11.10",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^5.45.0",
+    "fastify": "^4.10.2",
+    "jsdoc": "^4.0.0",
     "simple-get": "^4.0.1",
     "standard": "^17.0.0",
-    "tap": "^16.3.0",
-    "tsd": "^0.23.0"
+    "tap": "^16.3.2",
+    "tsd": "^0.25.0"
   },
   "standard": {
     "ignore": [
