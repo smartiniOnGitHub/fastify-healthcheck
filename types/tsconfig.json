@@ -1,11 +1,17 @@
 {
   "compilerOptions": {
-    "target": "ES6",
-    "lib": [ "ES2015", "DOM" ],
+    "checkJs": false,
+    "esModuleInterop": true,
+    "lib": [ "ES2020", "DOM" ],
     "module": "commonjs",
+    "moduleResolution": "node",
     "noEmit": true,
+    "noImplicitAny": true,
+    "preserveConstEnums": true,
+    "sourceMap": false,
     "strict": true,
-    "esModuleInterop": true
+    "strictNullChecks": true,
+    "target": "ES2020"
   },
   "include": [
     "/types/*.test-d.ts",
