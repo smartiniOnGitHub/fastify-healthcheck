@@ -1,6 +1,6 @@
 /// <reference types="node" />
 
-import underPressure from '@fastify/under-pressure'
+import { UnderPressureOptions } from '@fastify/under-pressure'
 import { FastifyPluginCallback } from 'fastify'
 
 export interface FastifyHealthcheckOptions {
@@ -8,7 +8,7 @@ export interface FastifyHealthcheckOptions {
   healthcheckUrlDisable?: boolean
   healthcheckUrlAlwaysFail?: boolean
   exposeUptime?: boolean
-  underPressureOptions?: underPressure.UnderPressureOptions
+  underPressureOptions?: UnderPressureOptions
 }
 
 declare const fastifyHealthcheck: FastifyPluginCallback<FastifyHealthcheckOptions>
