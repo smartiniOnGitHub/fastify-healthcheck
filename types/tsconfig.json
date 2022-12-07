@@ -14,7 +14,9 @@
     "target": "ES2020"
   },
   "include": [
-    "/types/*.test-d.ts",
-    "/types/*.d.ts"
+    "*.d.ts",
+    "*.test-d.ts",
+    "/types/*.d.ts",
+    "/types/*.test-d.ts"
   ]
 }

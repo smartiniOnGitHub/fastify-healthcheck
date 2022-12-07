@@ -26,6 +26,7 @@
     "lint:fix": "standard --fix",
     "lint:standard": "standard --verbose",
     "lint:typescript": "eslint -c types/.eslintrc.json types/*.d.ts types/*.test-d.ts",
+    "lint:typescript:fix": "eslint -c types/.eslintrc.json types/*.d.ts types/*.test-d.ts --fix",
     "lint": "npm run lint:standard && npm run lint:typescript",
     "start": "node src/healthcheck",
     "test:clean": "rm -rf .nyc_output/* ./coverage/*",
