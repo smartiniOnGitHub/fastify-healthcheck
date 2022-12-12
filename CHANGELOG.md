@@ -1,10 +1,11 @@
 # Change Log
 
-## [4.3.0](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/4.3.0) (unreleased)
+## [4.3.0](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/4.3.0) (2022-12-12)
 [Full Changelog](https://github.com/smartiniOnGitHub/fastify-healthcheck/compare/4.2.0...4.3.0)
 Summary Changelog:
-- Updated requirements to Fastify '^4.10.2' and all other dependencies to latest
-- Compatibility with TypeScript 4.9
+- Updated requirements to Fastify '^4.10.2' and under-pressure '^8.2.0'; 
+  updated all other dependencies to latest
+- Compatibility with TypeScript 4.9 and NodeNext / ESNext
 
 ## [4.2.0](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/4.2.0) (2022-09-01)
 [Full Changelog](https://github.com/smartiniOnGitHub/fastify-healthcheck/compare/4.1.0...4.2.0)
