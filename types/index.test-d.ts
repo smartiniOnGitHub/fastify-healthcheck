@@ -27,35 +27,19 @@ expectAssignable<FastifyHealthcheckOptions>({
     operationId: 'getHealth',
     description: 'Serve responses for health checks',
     response: {
-      500: {
-        content: {
-          'application/json': {
-            schema: {
-              statusCode: {
-                type: 'number'
-              },
-              status: {
-                type: 'string'
-              }
-            }
-          }
-        }
-      },
-      200: {
-        content: {
-          'application/json': {
-            schema: {
-              statusCode: {
-                type: 'number'
-              },
-              status: {
-                type: 'string'
-              },
-              uptime: {
-                type: 'number',
-                optional: true
-              }
-            }
+      default: {
+        description: 'Default Response',
+        type: 'object',
+        properties: {
+          statusCode: {
+            type: 'number'
+          },
+          status: {
+            type: 'string'
+          },
+          uptime: {
+            type: 'number',
+            optional: true
           }
         }
       }
