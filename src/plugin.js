@@ -48,44 +48,7 @@ function fastifyHealthcheck (fastify, options, done) {
     healthcheckUrlAlwaysFail = false,
     exposeUptime = false,
     underPressureOptions = { },
-    schemaOptions = {
-      operationId: "getHealth",
-      description: "Serve responses for health checks",
-      response: {
-        500: {
-          content: {
-            "application/json": {
-              schema: {
-                statusCode: {
-                  type: 'number'
-                },
-                status: {
-                  type: 'string'
-                }
-              },
-            },
-          },
-        },
-        200: {
-          content: {
-            "application/json": {
-              schema: {
-                statusCode: {
-                  type: 'number'
-                },
-                status: {
-                  type: 'string'
-                },
-                uptime: {
-                  type: 'number',
-                  optional: true
-                }
-              }
-            },
-          },
-        },
-      },
-    },
+    schemaOptions
   } = options
 
   ensureIsString(healthcheckUrl, 'healthcheckUrl')
@@ -93,7 +56,9 @@ function fastifyHealthcheck (fastify, options, done) {
   ensureIsBoolean(healthcheckUrlAlwaysFail, 'healthcheckUrlAlwaysFail')
   ensureIsBoolean(exposeUptime, 'exposeUptime')
   ensureIsObject(underPressureOptions, 'underPressureOptions')
-  ensureIsObject(schemaOptions, 'schemaOptions')
+  if (schemaOptions) {
+    ensureIsObject(schemaOptions, 'schemaOptions')
+  }
 
   // execute plugin code
 
