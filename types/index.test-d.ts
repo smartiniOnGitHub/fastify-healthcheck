@@ -22,5 +22,27 @@ expectAssignable<FastifyHealthcheckOptions>({
   healthcheckUrl: '/health',
   healthcheckUrlDisable: true,
   healthcheckUrlAlwaysFail: true,
-  exposeUptime: true
+  exposeUptime: true,
+  schemaOptions: {
+    operationId: 'getHealth',
+    description: 'Serve responses for health checks',
+    response: {
+      default: {
+        description: 'Default Response',
+        type: 'object',
+        properties: {
+          statusCode: {
+            type: 'number'
+          },
+          status: {
+            type: 'string'
+          },
+          uptime: {
+            type: 'number',
+            optional: true
+          }
+        }
+      }
+    }
+  }
 })

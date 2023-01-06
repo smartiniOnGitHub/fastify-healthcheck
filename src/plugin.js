@@ -35,6 +35,7 @@ const payloadKO = { statusCode: 500, status: 'ko' }
  *     <li>healthcheckUrlAlwaysFail (boolean, default false) flag to always return failure from health check route (mainly for testing purposes),</li>
  *     <li>exposeUptime (boolean, default false) flag to show even process uptime in health check results,</li>
  *     <li>underPressureOptions (object, default empty) for options to send directly to under-pressure,</li>
+ *     <li>schemaOptions (object, default empty) for options to use for route schema,</li>
  * </ul>
  * @param {!function} done callback, to call as last step
  *
@@ -46,7 +47,8 @@ function fastifyHealthcheck (fastify, options, done) {
     healthcheckUrlDisable = false,
     healthcheckUrlAlwaysFail = false,
     exposeUptime = false,
-    underPressureOptions = { }
+    underPressureOptions = { },
+    schemaOptions
   } = options
 
   ensureIsString(healthcheckUrl, 'healthcheckUrl')
@@ -54,6 +56,9 @@ function fastifyHealthcheck (fastify, options, done) {
   ensureIsBoolean(healthcheckUrlAlwaysFail, 'healthcheckUrlAlwaysFail')
   ensureIsBoolean(exposeUptime, 'exposeUptime')
   ensureIsObject(underPressureOptions, 'underPressureOptions')
+  if (schemaOptions) {
+    ensureIsObject(schemaOptions, 'schemaOptions')
+  }
 
   // execute plugin code
 
@@ -75,7 +80,8 @@ function fastifyHealthcheck (fastify, options, done) {
     fastify.route({
       method: 'GET',
       url: healthcheckUrl,
-      handler: healthcheckHandler
+      handler: healthcheckHandler,
+      schema: schemaOptions
     })
   }
 

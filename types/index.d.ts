@@ -34,6 +34,11 @@ declare namespace fastifyHealthcheck {
      * Override options for under-pressure (default: {}).
      */
     underPressureOptions?: UnderPressureOptions
+
+    /**
+     * Fastify schema for the healthcheck route (default: undefined).
+     */
+    schemaOptions?: unknown
   }
 
   export const fastifyHealthcheck: FastifyHealthcheckPlugin
