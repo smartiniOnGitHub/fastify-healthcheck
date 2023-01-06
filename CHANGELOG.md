@@ -1,5 +1,11 @@
 # Change Log
 
+## [4.4.0](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/4.4.0) (2023-01-06)
+[Full Changelog](https://github.com/smartiniOnGitHub/fastify-healthcheck/compare/4.3.0...4.4.0)
+Summary Changelog:
+- Updated requirements to Fastify '^4.11.0' and all other dependencies to latest
+- Adds schema options for health endpoint
+
 ## [4.3.0](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/4.3.0) (2022-12-12)
 [Full Changelog](https://github.com/smartiniOnGitHub/fastify-healthcheck/compare/4.2.0...4.3.0)
 Summary Changelog:
