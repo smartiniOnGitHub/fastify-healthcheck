@@ -1,6 +1,6 @@
 /// <reference types="node" />
 
-import { UnderPressureOptions } from '@fastify/under-pressure'
+import { FastifyUnderPressureOptions } from '@fastify/under-pressure'
 // import { FastifyInstance, FastifyPluginCallback, FastifyPluginOptions, FastifyRequest } from 'fastify'
 import { FastifyPluginCallback } from 'fastify'
 
@@ -33,7 +33,7 @@ declare namespace fastifyHealthcheck {
     /**
      * Override options for under-pressure (default: {}).
      */
-    underPressureOptions?: UnderPressureOptions
+    underPressureOptions?: FastifyUnderPressureOptions
 
     /**
      * Fastify schema for the healthcheck route (default: undefined).
