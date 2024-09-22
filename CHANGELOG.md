@@ -1,15 +1,10 @@
 # Change Log
 
-## [5.0.0](https://github.com/smartiniOnGitHub/fastify-favicon/releases/tag/5.0.0) (unreleased)
+## [5.0.0](https://github.com/smartiniOnGitHub/fastify-favicon/releases/tag/5.0.0) (2024-09-22)
 [Full Changelog](https://github.com/smartiniOnGitHub/fastify-favicon/compare/4.5.0...5.0.0)
 Summary Changelog:
 - Updated requirements to Fastify '^5.0.0'
 - Updated all dependencies to latest (for Node.js 20 LTS)
-
-## [4.5.0](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/4.5.0) (unreleased)
-[Full Changelog](https://github.com/smartiniOnGitHub/fastify-healthcheck/compare/4.4.0...4.5.0)
-Summary Changelog:
-- Updated requirements to Fastify '^4.13.0' and all other dependencies to latest
 
 ## [4.4.0](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/4.4.0) (2023-01-06)
 [Full Changelog](https://github.com/smartiniOnGitHub/fastify-healthcheck/compare/4.3.0...4.4.0)
