@@ -1,6 +1,6 @@
 {
   "name": "fastify-healthcheck",
-  "version": "4.5.0",
+  "version": "5.0.0",
   "description": "Fastify Plugin to serve responses for health checks",
   "main": "src/plugin",
   "types": "types/index.d.ts",
@@ -18,7 +18,7 @@
     "docker:run": "docker run --rm --name fastify-healthcheck-example -d -p 3000:3000 -t fastify-healthcheck-example",
     "docker:status": "docker inspect --format '{{ json .State.Health }}' fastify-healthcheck-example",
     "docker:stop": "docker kill fastify-healthcheck-example",
-    "docs:clean": "rm -rf ./out/*",
+    "docs:clean": "rm -rf ./docs/*",
     "docs:generate": "npx jsdoc -c .jsdoc.json -R README.md",
     "docs": "npm run docs:clean && npm run docs:generate",
     "example-under-pressure-fail": "node example/example-under-pressure-fail",
@@ -30,28 +30,28 @@
     "lint:typescript:eslint:fix": "eslint -c types/.eslintrc.json types/*.d.ts types/*.test-d.ts --fix",
     "lint": "npm run lint:standard && npm run lint:typescript",
     "start": "node src/healthcheck",
-    "test:clean": "rm -rf .nyc_output/* ./coverage/*",
-    "test:coverage:all": "npm run test:unit --  --cov",
-    "test:coverage": "npm run test:unit -- --cov --coverage-report=html",
+    "test:clean": "rm -rf .nyc_output/* .tap/* ./coverage/*",
+    "test:coverage:all": "npm run test:unit --  --coverage-report=text",
+    "test:coverage": "npm run test:unit -- --coverage-report=html",
     "test:types": "tsd",
-    "test:unit:debug": "tap -T --node-arg=--inspect-brk test/*.test.js",
-    "test:unit:dev": "tap --watch --cov test/*.test.js",
-    "test:unit": "tap -j 1 test/*.test.js",
+    "test:unit:debug": "tap -T --node-arg=--inspect-brk",
+    "test:unit:dev": "tap --watch --coverage-report=none",
+    "test:unit": "tap --allow-incomplete-coverage",
     "test": "npm run lint:standard && npm run lint:typescript && npm run test:types && npm run test:unit"
   },
   "dependencies": {
-    "@fastify/under-pressure": "^8.2.0"
+    "@fastify/under-pressure": "^9.0.1"
   },
   "devDependencies": {
-    "@types/node": "^18.14.1",
-    "@typescript-eslint/eslint-plugin": "^5.53.0",
-    "@typescript-eslint/parser": "^5.53.0",
-    "fastify": "^4.13.0",
-    "jsdoc": "^4.0.2",
+    "@types/node": "^22.5.5",
+    "@typescript-eslint/eslint-plugin": "^8.6.0",
+    "@typescript-eslint/parser": "^8.6.0",
+    "fastify": "^5.0.0",
+    "jsdoc": "^4.0.3",
     "simple-get": "^4.0.1",
-    "standard": "^17.0.0",
-    "tap": "^16.3.4",
-    "tsd": "^0.25.0"
+    "standard": "^17.1.2",
+    "tap": "^21.0.1",
+    "tsd": "^0.31.2"
   },
   "standard": {
     "ignore": [
@@ -67,7 +67,7 @@
   },
   "peerDependencies": {},
   "engines": {
-    "node": ">=14.15.0"
+    "node": ">=20.9.0"
   },
   "homepage": "https://github.com/smartiniOnGitHub/fastify-healthcheck#readme",
   "repository": {
