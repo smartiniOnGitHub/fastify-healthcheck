@@ -44,5 +44,8 @@ expectAssignable<FastifyHealthcheckOptions>({
         }
       }
     }
+  },
+  configOptions: {
+    hello: 'world'
   }
 })

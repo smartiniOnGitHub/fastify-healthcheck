@@ -39,6 +39,11 @@ declare namespace fastifyHealthcheck {
      * Fastify schema for the healthcheck route (default: undefined).
      */
     schemaOptions?: unknown
+
+    /**
+     * Fastify route config for the healthcheck route (default: undefined). See https://fastify.dev/docs/latest/Reference/Routes/#config
+     */
+    configOptions?: unknown
   }
 
   export const fastifyHealthcheck: FastifyHealthcheckPlugin
