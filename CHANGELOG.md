@@ -1,5 +1,11 @@
 # Change Log
 
+## [5.1.0](https://github.com/smartiniOnGitHub/fastify-favicon/releases/tag/5.1.0) (2024-11-09)
+[Full Changelog](https://github.com/smartiniOnGitHub/fastify-favicon/compare/5.0.0...5.1.0)
+Summary Changelog:
+- Add plugin configOptions argument to allow passing config to route
+- Updated all dependencies to latest
+
 ## [5.0.0](https://github.com/smartiniOnGitHub/fastify-favicon/releases/tag/5.0.0) (2024-09-22)
 [Full Changelog](https://github.com/smartiniOnGitHub/fastify-favicon/compare/4.5.0...5.0.0)
 Summary Changelog:
