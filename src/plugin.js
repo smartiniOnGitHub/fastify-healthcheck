@@ -61,7 +61,6 @@ function fastifyHealthcheck (fastify, options, done) {
   if (schemaOptions) {
     ensureIsObject(schemaOptions, 'schemaOptions')
   }
-
   if (configOptions) {
     ensureIsObject(configOptions, 'configOptions')
   }
