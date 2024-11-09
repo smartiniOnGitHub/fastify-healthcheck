@@ -38,7 +38,7 @@ test('Should return 503 on maxHeapUsedBytes', (t) => {
   // t.plan(5)
 
   const fastify = Fastify()
-  t.teardown(() => { fastify.close() })
+  t.after(() => { fastify.close() })
   fastify.register(underPressure, {
     maxHeapUsedBytes: 1
   })
@@ -48,7 +48,7 @@ test('Should return 503 on maxHeapUsedBytes', (t) => {
   })
 
   fastify.listen({ port: 0 }, (err, address) => {
-    t.error(err)
+    if (err) t.assert.ifError(err)
 
     process.nextTick(() => block(monitorEventLoopDelay ? 1500 : 500))
 
@@ -57,7 +57,7 @@ test('Should return 503 on maxHeapUsedBytes', (t) => {
       method: 'GET',
       url: address
     }, (err, response, body) => {
-      t.error(err)
+      if (err) t.assert.ifError(err)
       t.equal(response.statusCode, 503)
       t.equal(response.headers['retry-after'], '10')
       t.same(JSON.parse(body), {
