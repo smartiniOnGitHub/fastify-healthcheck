@@ -1,13 +1,18 @@
 # Change Log
 
-## [5.1.0](https://github.com/smartiniOnGitHub/fastify-favicon/releases/tag/5.1.0) (2024-11-09)
-[Full Changelog](https://github.com/smartiniOnGitHub/fastify-favicon/compare/5.0.0...5.1.0)
+## [5.2.0](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/5.2.0) (unreleased)
+[Full Changelog](https://github.com/smartiniOnGitHub/fastify-healthcheck/compare/5.1.0...5.2.0)
+Summary Changelog:
+- Updated all dependencies to latest
+
+## [5.1.0](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/5.1.0) (2024-11-09)
+[Full Changelog](https://github.com/smartiniOnGitHub/fastify-healthcheck/compare/5.0.0...5.1.0)
 Summary Changelog:
 - Add plugin configOptions argument to allow passing config to route
 - Updated all dependencies to latest
 
-## [5.0.0](https://github.com/smartiniOnGitHub/fastify-favicon/releases/tag/5.0.0) (2024-09-22)
-[Full Changelog](https://github.com/smartiniOnGitHub/fastify-favicon/compare/4.5.0...5.0.0)
+## [5.0.0](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/5.0.0) (2024-09-22)
+[Full Changelog](https://github.com/smartiniOnGitHub/fastify-healthcheck/compare/4.5.0...5.0.0)
 Summary Changelog:
 - Updated requirements to Fastify '^5.0.0'
 - Updated all dependencies to latest (for Node.js 20 LTS)
@@ -61,7 +66,7 @@ Summary Changelog:
 - Generate documentation from sources with JSDoc
 
 ## [3.1.0](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/3.1.0) (2021-02-09)
-[Full Changelog](https://github.com/smartiniOnGitHub/fastify-favicon/compare/3.0.0...3.1.0)
+[Full Changelog](https://github.com/smartiniOnGitHub/fastify-healthcheck/compare/3.0.0...3.1.0)
 Summary Changelog:
 - Updated requirements to Under-pressure '^5.6.0'
 - Update all dependencies to latest, and removed 'standardx' (as dev dependency)
@@ -70,7 +75,7 @@ Summary Changelog:
 - Ensure compatibility with Under-pressure option to specify a custom route for healthcheck/status
 
 ## [3.0.0](https://github.com/smartiniOnGitHub/fastify-healthcheck/releases/tag/3.0.0) (2020-07-24)
-[Full Changelog](https://github.com/smartiniOnGitHub/fastify-favicon/compare/2.3.1...3.0.0)
+[Full Changelog](https://github.com/smartiniOnGitHub/fastify-healthcheck/compare/2.3.1...3.0.0)
 Summary Changelog:
 - Updated requirements to Fastify '^3.0.0' (as dev dependency)
 - Updated all dependencies to latest
